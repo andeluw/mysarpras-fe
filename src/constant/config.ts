@@ -1,7 +1,7 @@
 export const siteConfig = {
-  title: 'Next.js + Tailwind CSS + TypeScript Starter',
+  title: 'mySarpras',
   description:
-    'A starter for Next.js, Tailwind CSS, and TypeScript with Absolute Import, Seo, Link component, pre-configured with Husky',
+    'mySarpras adalah aplikasi web untuk peminjaman ruangan kampus secara online. Mahasiswa dan dosen dapat dengan mudah meminjam ruang dan fasilitas kampus secara cepat, efisien, dan terorganisir.',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
   url: 'https://tsnext-tw.thcl.dev',
 };

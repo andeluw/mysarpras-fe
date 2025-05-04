@@ -236,7 +236,6 @@ This changelog is manually generated and not accurate with the package.json, onl
     1. **ESLint** - will fail if there are any warning and error.
     2. **Type Check** - will fail on `tsc` error.
     3. **Prettier Check** - will fail if there are any formatting error.
-    4. **Test** - will fail if there are any test failure.
 
 ## 0.1.0
 
