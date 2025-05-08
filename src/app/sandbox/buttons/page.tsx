@@ -69,7 +69,7 @@ export default function ButtonSandboxPage() {
 
   return (
     <div className='layout min-h-screen py-20 bg-white text-black'>
-      <Typography as='h1' variant='h5' weight='bold'>
+      <Typography as='h1' variant='h1'>
         Button Sandbox
       </Typography>
 
@@ -79,9 +79,7 @@ export default function ButtonSandboxPage() {
 
       <section className='mt-10 space-y-8'>
         <div className='space-y-6'>
-          <Typography variant='p' weight='semibold'>
-            Button
-          </Typography>
+          <Typography variant='h3'>Button</Typography>
           {renderButtonRow()}
           {renderIconButtons()}
           {renderButtonRow({ size: 'sm' })}
@@ -95,9 +93,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            ButtonLink
-          </Typography>
+          <Typography variant='h3'>ButtonLink</Typography>
           <div className='flex flex-wrap gap-2'>
             {variantKeys.map((variant) => (
               <ButtonLink
@@ -112,9 +108,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            PrimaryLink
-          </Typography>
+          <Typography variant='h3'>PrimaryLink</Typography>
           <div className='flex flex-wrap gap-4'>
             <PrimaryLink href='/'>Internal Links</PrimaryLink>
             <PrimaryLink href='https://google.com'>Outside Links</PrimaryLink>
@@ -122,9 +116,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            UnstyledLink
-          </Typography>
+          <Typography variant='h3'>UnstyledLink</Typography>
           <div className='flex flex-wrap gap-4'>
             <UnstyledLink href='/'>Internal Links</UnstyledLink>
             <UnstyledLink href='https://google.com'>Outside Links</UnstyledLink>
@@ -132,9 +124,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            UnderlineLink
-          </Typography>
+          <Typography variant='h3'>UnderlineLink</Typography>
           <div className='flex flex-wrap gap-4'>
             <UnderlineLink href='/'>Internal Links</UnderlineLink>
             <UnderlineLink href='https://google.com'>
@@ -144,9 +134,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            ArrowLink
-          </Typography>
+          <Typography variant='h3'>ArrowLink</Typography>
           <div className='flex items-center flex-wrap gap-4'>
             <ArrowLink href='/' direction='left'>
               Direction Left
@@ -171,9 +159,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            TextButton
-          </Typography>
+          <Typography variant='h3'>TextButton</Typography>
           <div className='flex flex-wrap gap-2'>
             <TextButton>Primary</TextButton>
             <TextButton variant='basic'>Basic</TextButton>
@@ -181,9 +167,7 @@ export default function ButtonSandboxPage() {
         </div>
 
         <div className='space-y-2'>
-          <Typography variant='p' weight='semibold'>
-            IconButton
-          </Typography>
+          <Typography variant='h3'>IconButton</Typography>
           <div className='flex flex-wrap gap-2'>
             <IconButton icon={Plus} />
             <IconButton variant='secondary' icon={Minus} />

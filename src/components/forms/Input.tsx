@@ -117,7 +117,7 @@ export default function Input({
               RightIcon && 'pr-9',
               readOnly && 'cursor-not-allowed',
               error &&
-                'border-none ring-2 ring-inset ring-red-500 placeholder:text-muted-foreground focus:ring-red-500',
+                'border-none ring-[1.25px] ring-inset ring-red-500 placeholder:text-muted-foreground focus:ring-red-500',
               prefix && 'rounded-l-none rounded-r-md',
               suffix && 'rounded-l-md rounded-r-none',
               prefix && suffix && 'rounded-none',
@@ -167,12 +167,7 @@ export default function Input({
 
       {!hideError && error && <ErrorMessage>{error.message}</ErrorMessage>}
       {helperText && (
-        <HelperText
-          helperTextClassName={cn(
-            helperTextClassName,
-            !hideError && error && 'text-red-500'
-          )}
-        >
+        <HelperText helperTextClassName={cn(helperTextClassName)}>
           {helperText}
         </HelperText>
       )}

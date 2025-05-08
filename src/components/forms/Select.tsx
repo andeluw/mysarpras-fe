@@ -1,159 +1,260 @@
-'use client';
+import get from 'lodash.get';
+import { ChevronDown, X } from 'lucide-react';
+import type { RegisterOptions } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import type { MultiValue, StylesConfig } from 'react-select';
+import ReactSelect, { components } from 'react-select';
 
-import * as SelectPrimitive from '@radix-ui/react-select';
-import { Check, ChevronDown, ChevronUp } from 'lucide-react';
-import * as React from 'react';
-
+import type { ExtractProps } from '@/lib/helper';
 import { cn } from '@/lib/utils';
 
-const Select = SelectPrimitive.Root;
+import ErrorMessage from '@/components/forms/ErrorMessage';
+import HelperText from '@/components/forms/HelperText';
+import { Label } from '@/components/forms/Label';
 
-const SelectGroup = SelectPrimitive.Group;
+export type SelectProps = {
+  label: string | null;
+  id: string;
+  placeholder?: React.ReactNode;
+  helperText?: string;
+  type?: string;
+  isFixed?: boolean;
+  isMulti?: boolean;
+  readOnly?: boolean;
+  hideError?: boolean;
+  validation?: RegisterOptions;
+  options: { value: string; label: string }[];
+  containerClassName?: string;
+} & React.ComponentPropsWithoutRef<'select'> &
+  ExtractProps<ReactSelect>;
 
-const SelectValue = SelectPrimitive.Value;
+const Select = ({
+  disabled,
+  readOnly,
+  label,
+  helperText,
+  id,
+  isFixed = false,
+  isMulti = false,
+  placeholder,
+  validation,
+  options,
+  hideError = false,
+  containerClassName,
+  ...rest
+}: SelectProps) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = get(errors, id);
+  const withLabel = label !== null;
 
-const SelectTrigger = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <SelectPrimitive.Icon asChild>
-      <ChevronDown className='h-4 w-4 opacity-50' />
-    </SelectPrimitive.Icon>
-  </SelectPrimitive.Trigger>
-));
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
+  //#region  //*=========== Styles ===========
+  const customStyles: StylesConfig = {
+    control: (styles) => ({
+      ...styles,
+      // red-500 and gray-300
+      border: `solid ${error ? '2px #EF4444' : '1.5px #D1D5DB'}`,
+      '&:hover': {
+        border: `solid ${error ? '#1.5px EF4444' : '2px #D1D5DB'}`,
+      },
+      boxShadow: 'none',
+      transition: 'none',
+      '&:focus-within': {
+        border: `solid 1.25px ${
+          error ? '#EF4444' : 'var(--color-primary-500)'
+        }`,
+        boxShadow: `0 0 0 1.25px ${
+          error ? '#EF4444' : 'var(--color-primary-500)'
+        }`,
+      },
+      '*': {
+        boxShadow: 'none !important',
+      },
+      borderRadius: '0.5rem',
+      padding: '0 0.75rem',
+      background: disabled || readOnly ? '#F3F4F6' : undefined,
+      cursor: 'pointer',
+    }),
+    valueContainer: (styles) => ({
+      ...styles,
+      padding: 0,
+      gap: '0.5rem',
+    }),
+    input: (styles) => ({
+      ...styles,
+      padding: 0,
+      margin: 0,
+      caretColor: 'var(--color-primary-500)',
+      color: '#1F201d',
+      '::placeholder': {
+        color: '#5a5d56',
+      },
+    }),
+    singleValue: (styles) => ({
+      ...styles,
+      color: 'inherit',
+    }),
+    indicatorsContainer: (styles) => ({
+      ...styles,
+      '&>div': {
+        padding: 0,
+      },
+    }),
+    dropdownIndicator: (styles) => ({
+      ...styles,
+      color: '#878787',
+      '&:hover': {
+        color: '#878787',
+      },
+    }),
+    option: (styles, state) => ({
+      ...styles,
+      color: 'black',
+      background: state.isFocused
+        ? 'var(--color-primary-50)'
+        : state.isSelected
+        ? 'var(--color-primary-100)'
+        : 'white',
+      ':hover': {
+        background: '#E5E7EB',
+      },
+      cursor: 'pointer',
+    }),
+    multiValue: (styles) => ({
+      ...styles,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.25rem',
+      background: 'var(--color-primary-100)',
+      borderRadius: '0.375rem',
+      padding: '0.25rem 0.75rem',
+      margin: 0,
+    }),
+    multiValueLabel: (styles) => ({
+      ...styles,
+      color: 'var(--color-primary-700)',
+      padding: 0,
+      paddingLeft: 0,
+    }),
+    multiValueRemove: (styles) => ({
+      ...styles,
+      color: 'var(--color-primary-700)',
+      padding: 0,
+      paddingLeft: '0.5rem',
+      '&:hover': {
+        color: 'var(--color-primary-700)',
+        backgroundColor: 'transparent',
+      },
+    }),
+    menu: (styles) => ({
+      ...styles,
+      borderRadius: '0.5rem',
+      overflow: 'hidden',
+    }),
+    menuPortal: (styles) => ({
+      ...styles,
+      zIndex: 1,
+    }),
+  };
 
-const SelectScrollUpButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollUpButton
-    ref={ref}
-    className={cn(
-      'flex cursor-default items-center justify-center py-1',
-      className
-    )}
-    {...props}
-  >
-    <ChevronUp className='h-4 w-4' />
-  </SelectPrimitive.ScrollUpButton>
-));
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
+  //#endregion  //*======== Styles ===========
 
-const SelectScrollDownButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollDownButton
-    ref={ref}
-    className={cn(
-      'flex cursor-default items-center justify-center py-1',
-      className
-    )}
-    {...props}
-  >
-    <ChevronDown className='h-4 w-4' />
-  </SelectPrimitive.ScrollDownButton>
-));
-SelectScrollDownButton.displayName =
-  SelectPrimitive.ScrollDownButton.displayName;
-
-const SelectContent = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      className={cn(
-        'relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]',
-        position === 'popper' &&
-          'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-        className
-      )}
-      position={position}
-      {...props}
-    >
-      <SelectScrollUpButton />
-      <SelectPrimitive.Viewport
+  return (
+    <div className={containerClassName}>
+      {withLabel ? (
+        <Label required={validation?.required ? true : false}>{label}</Label>
+      ) : null}
+      <div
         className={cn(
-          'p-1',
-          position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
+          'relative',
+          withLabel && 'mt-1',
+          (disabled || readOnly) && 'cursor-not-allowed'
         )}
       >
-        {children}
-      </SelectPrimitive.Viewport>
-      <SelectScrollDownButton />
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
-));
-SelectContent.displayName = SelectPrimitive.Content.displayName;
-
-const SelectLabel = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.Label
-    ref={ref}
-    className={cn('px-2 py-1.5 text-sm font-semibold', className)}
-    {...props}
-  />
-));
-SelectLabel.displayName = SelectPrimitive.Label.displayName;
-
-const SelectItem = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Item
-    ref={ref}
-    className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    {...props}
-  >
-    <span className='absolute right-2 flex h-3.5 w-3.5 items-center justify-center'>
-      <SelectPrimitive.ItemIndicator>
-        <Check className='h-4 w-4' />
-      </SelectPrimitive.ItemIndicator>
-    </span>
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-  </SelectPrimitive.Item>
-));
-SelectItem.displayName = SelectPrimitive.Item.displayName;
-
-const SelectSeparator = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.Separator
-    ref={ref}
-    className={cn('-mx-1 my-1 h-px bg-muted', className)}
-    {...props}
-  />
-));
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
-
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
+        <Controller
+          control={control}
+          name={id}
+          render={({ field }) => {
+            return (
+              <ReactSelect
+                {...field}
+                classNames={{
+                  control: () => '!min-h-[2.25rem] md:!min-h-[2.5rem]',
+                }}
+                closeMenuOnSelect={!isMulti}
+                components={{
+                  IndicatorSeparator: () => null,
+                  DropdownIndicator: (props) => (
+                    <components.DropdownIndicator {...props}>
+                      <ChevronDown size={18} />
+                    </components.DropdownIndicator>
+                  ),
+                  ClearIndicator: (props) => (
+                    <components.ClearIndicator {...props}>
+                      <X
+                        className='mr-0.5 text-typo-icons hover:text-typo-secondary'
+                        size={18}
+                      />
+                    </components.ClearIndicator>
+                  ),
+                  MultiValueRemove: (props) => (
+                    <components.MultiValueRemove {...props}>
+                      <X size={18} />
+                    </components.MultiValueRemove>
+                  ),
+                }}
+                inputId={id}
+                isClearable
+                isDisabled={disabled || readOnly}
+                isMulti={isMulti}
+                menuPosition={isFixed ? 'fixed' : undefined}
+                onChange={(selectedOptions) => {
+                  isMulti
+                    ? field.onChange(
+                        (
+                          selectedOptions as MultiValue<
+                            (typeof options)[number]
+                          >
+                        ).map((option) => option?.value ?? '')
+                      )
+                    : field.onChange(
+                        (selectedOptions as (typeof options)[number])?.value ??
+                          ''
+                      );
+                }}
+                options={options}
+                placeholder={placeholder}
+                styles={customStyles}
+                value={
+                  //? null is needed so if the selected value is not found in the options, it will clear the value
+                  isMulti
+                    ? field.value?.map(
+                        (value: unknown) =>
+                          options.find((option) => option.value === value) ??
+                          null
+                      )
+                    : options.find((opt) => opt.value === field.value) ?? null
+                }
+                {...rest}
+              />
+            );
+          }}
+          rules={validation}
+        />
+        {!hideError && error ? (
+          <ErrorMessage className='mt-2'>
+            {String(error.message ?? '')}
+          </ErrorMessage>
+        ) : null}
+        {helperText ? (
+          <HelperText helperTextClassName='mt-2'>{helperText}</HelperText>
+        ) : null}
+      </div>
+    </div>
+  );
 };
+Select.displayName = 'Select';
+
+export default Select;

@@ -32,11 +32,20 @@ const systemColors = [
 
 const primaryShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
+const itsColors = [
+  'primary-main',
+  'primary-dark',
+  'primary-light',
+  'primary-active',
+  'secondary-main',
+  'secondary-dark',
+];
+
 export default function Page() {
   return (
     <div className='py-20 min-h-screen layout space-y-20'>
       <div>
-        <Typography as='h1' variant='h5' weight='bold'>
+        <Typography as='h1' variant='h1'>
           Color Sandbox
         </Typography>
         <UnderlineLink href='/sandbox' className='mt-2'>
@@ -45,7 +54,21 @@ export default function Page() {
       </div>
 
       <div>
-        <Typography as='h2' variant='h6' weight='semibold' className='mb-4'>
+        <Typography as='h2' variant='h2' className='mb-4'>
+          ITS Colors
+        </Typography>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+          {itsColors.map((color) => (
+            <div key={color} className='flex items-center gap-4'>
+              <div className={`w-16 h-16 rounded-md border bg-${color}`} />
+              <span className='text-sm font-mono'>{color}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Typography as='h2' variant='h2' className='mb-4'>
           Primary Colors
         </Typography>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4'>
@@ -64,7 +87,7 @@ export default function Page() {
       </div>
 
       <div>
-        <Typography as='h2' variant='h6' weight='semibold' className='mb-4'>
+        <Typography as='h2' variant='h2' className='mb-4'>
           System Colors
         </Typography>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>

@@ -4,7 +4,6 @@
 
 :root {
   /* #region  /**=========== Primary Color =========== */
-  /* !STARTERCONF Customize these variable, copy and paste from /styles/colors.css for list of colors */
   --tw-color-primary-50: 239 246 255;
   --tw-color-primary-100: 219 234 254;
   --tw-color-primary-200: 191 219 254;
@@ -28,6 +27,15 @@
   --color-primary-900: rgb(var(--tw-color-primary-900)); /* #1e3a8a */
   --color-primary-950: rgb(var(--tw-color-primary-950)); /* #172554 */
   /* #endregion  /**======== Primary Color =========== */
+
+  /* #region  /**=========== ITS Color =========== */
+  --primary-main: '#243E80';
+  --primary-light: '#75BEDE';
+  --primary-dark: '#013880';
+  --primary-active: '#007BC0';
+  --secondary-main: '#F0F4FF';
+  --secondary-dark: '#FFBD07';
+  /* #endregion  /**======== ITS Color =========== */
 }
 
 @layer base {

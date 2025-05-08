@@ -35,6 +35,10 @@ export default {
           '950': 'rgb(var(--tw-color-primary-950) / <alpha-value>)',
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          main: '#243E80',
+          dark: '#013880',
+          light: '#75BEDE',
+          active: '#007BC0',
         },
         dark: '#222222',
         background: 'hsl(var(--background))',
@@ -50,6 +54,8 @@ export default {
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          main: '#FFF200',
+          dark: '#FFBD07',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',

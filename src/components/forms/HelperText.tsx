@@ -15,8 +15,7 @@ export default function HelperText({
     <div className='flex space-x-1'>
       <Typography
         as='p'
-        weight='regular'
-        variant='c'
+        variant='c1'
         className={cn(
           'text-xs !leading-tight text-muted-foreground',
           helperTextClassName

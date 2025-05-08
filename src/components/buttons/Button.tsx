@@ -46,7 +46,7 @@ const buttonClassName = cva(
         sm: 'px-2 py-1 text-xs md:text-sm',
         md: 'h-10 px-4 py-2 text-sm md:text-base',
         lg: 'h-12 rounded-md px-6 text-lg md:text-xl',
-        icon: 'h-9 w-9',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {

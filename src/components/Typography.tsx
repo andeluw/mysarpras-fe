@@ -1,105 +1,122 @@
-import { Inter } from 'next/font/google';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-const inter = Inter({ subsets: ['latin'] });
-
-export enum TypographyVariant {
+const TypographyVariant = [
+  'j1',
+  'j2',
   'h1',
   'h2',
   'h3',
   'h4',
   'h5',
   'h6',
-  't',
-  'p',
-  'bt',
-  'c',
+  's1',
+  's2',
+  's3',
+  's4',
+  'b1',
+  'b2',
+  'b3',
   'c1',
-}
+  'c2',
+  'l1',
+  'l2',
+] as const;
 
-enum FontWeight {
-  'thin',
-  'extralight',
-  'light',
-  'regular',
-  'medium',
-  'semibold',
-  'bold',
-  'extrabold',
-  'black',
-}
+const TypographyColor = [
+  'primary',
+  'secondary',
+  'tertiary',
+  'danger',
+  'white',
+] as const;
 
-type TypographyProps<T extends React.ElementType> = {
+export type TypographyProps<T extends React.ElementType> = {
+  /** @defaultValue <p> tag */
   as?: T;
   className?: string;
-  weight?: keyof typeof FontWeight;
-  variant?: keyof typeof TypographyVariant;
-  children: React.ReactNode;
-};
+  color?: (typeof TypographyColor)[number];
+  /**
+   * | Variant | Size Class | Font Size | Font Weight |
+   * | :------ | :--------- | :-------- | :---------- |
+   * | j1      | text-4xl   | 36px      | 700         |
+   * | j2      | text-3xl   | 30px      | 700         |
+   * | h1      | text-2xl   | 24px      | 600         |
+   * | h2      | text-xl    | 20px      | 600         |
+   * | h3      | text-lg    | 18px      | 600         |
+   * | h4      | text-base  | 16px      | 700         |
+   * | h5      | text-base  | 16px      | 600         |
+   * | h6      | text-sm    | 14px      | 600         |
+   * | s1      | text-lg    | 18px      | 500         |
+   * | s2      | text-base  | 16px      | 500         |
+   * | s3      | text-sm    | 14px      | 500         |
+   * | s4      | text-xs    | 12px      | 500         |
+   * | b1      | text-lg    | 18px      | 400         |
+   * | b2      | text-base  | 16px      | 400         |
+   * | b3      | text-sm    | 14px      | 400         |
+   * | c1      | text-xs    | 12px      | 400         |
+   * | c2      | -          | 11px      | 400         |
+   */
+  variant?: (typeof TypographyVariant)[number];
+} & React.ComponentPropsWithoutRef<T>;
 
-export default function Typography<T extends React.ElementType>({
-  as,
-  children,
-  weight = 'regular',
-  className,
-  variant = 'p',
-  ...props
-}: TypographyProps<T> &
-  Omit<React.ComponentProps<T>, keyof TypographyProps<T>>) {
+const Typography = React.forwardRef(function Typography<
+  T extends React.ElementType
+>(
+  {
+    as,
+    children,
+    className,
+    color = 'primary',
+    variant = 'b2',
+    ...rest
+  }: TypographyProps<T>,
+  ref?: React.ComponentPropsWithRef<T>['ref']
+) {
   const Component = as || 'p';
   return (
     <Component
       className={cn(
-        // *=============== Font Weights ==================
+        //#region  //*=========== Variants ===========
         [
-          weight === 'regular' && 'font-normal',
-          weight === 'medium' && 'font-medium',
-          weight === 'semibold' && 'font-semibold',
-          weight === 'bold' && 'font-bold',
+          variant === 'j1' && ['text-4xl font-bold'],
+          variant === 'j2' && ['text-3xl font-bold'],
+          variant === 'h1' && ['text-2xl font-semibold'],
+          variant === 'h2' && ['text-xl font-semibold'],
+          variant === 'h3' && ['text-lg font-semibold'],
+          variant === 'h4' && ['text-base font-bold'],
+          variant === 'h5' && ['text-base font-semibold'],
+          variant === 'h6' && ['text-sm font-semibold'],
+          variant === 's1' && ['text-lg font-medium'],
+          variant === 's2' && ['text-base font-medium'],
+          variant === 's3' && ['text-sm font-medium'],
+          variant === 's4' && ['text-xs font-medium'],
+          variant === 'b1' && ['text-lg'],
+          variant === 'b2' && ['text-base'],
+          variant === 'b3' && ['text-sm font-normal'],
+          variant === 'c1' && ['text-xs'],
+          variant === 'c2' && ['text-[11px] leading-[14px]'],
         ],
-        // *=============== Font Variants ==================
+        //#endregion  //*======== Variants ===========
+        //#region  //*=========== Color ===========
         [
-          variant === 'h1' && [
-            'text-[40px] leading-[48px] sm:text-[64px] sm:leading-[80px] md:text-[80px] md:leading-[96px]',
-          ],
-          variant === 'h2' && [
-            'text-[32px] leading-[40px] sm:text-[48px] sm:leading-[64px] md:text-[64px] md:leading-[80px]',
-          ],
-          variant === 'h3' && [
-            'text-[32px] leading-[40px] sm:text-[48px] sm:leading-[64px] md:text-[64px] md:leading-[84px]',
-          ],
-          variant === 'h4' && [
-            'text-[24px] leading-[32px] sm:text-[32px] sm:leading-[48px] md:text-[48px] md:leading-[64px]',
-          ],
-          variant === 'h5' && [
-            'text-[20px] leading-[28px] sm:text-[24px] sm:leading-[32px] md:text-[32px] md:leading-[48px]',
-          ],
-          variant === 'h6' && [
-            'text-[18px] leading-[24px] sm:text-[20px] sm:leading-[28px] md:text-[24px] md:leading-[32px]',
-          ],
-          variant === 't' && [
-            'text-[16px] leading-[24px] sm:text-[18px] sm:leading-[24px] md:text-[20px] md:leading-[24px]',
-          ],
-          variant === 'p' && [
-            'text-[14px] leading-[20px] sm:text-[16px] sm:leading-[22px] md:text-[18px] md:leading-[24px]',
-          ],
-          variant === 'bt' && [
-            'text-[14px] leading-[20px] sm:text-[14px] sm:leading-[22px] md:text-[16px] md:leading-[24px]',
-          ],
-          variant === 'c' && [
-            'text-[12px] leading-[18px] sm:text-[14px] sm:leading-[22px] md:text-[14px] md:leading-[24px]',
-          ],
-          variant === 'c1' && [
-            'text-[10px] leading-[16px] sm:text-[12px] sm:leading-[20px] md:text-[12px] md:leading-[24px]',
-          ],
+          color === 'primary' && ['text-typo'],
+          color === 'secondary' && ['text-typo-secondary'],
+          color === 'tertiary' && ['text-typo-tertiary'],
+          color === 'danger' && ['text-red-500'],
+          color === 'white' && ['text-white'],
         ],
-        inter.className,
+        //#endregion  //*======== Color ===========
         className
       )}
-      {...props}
+      ref={ref}
+      {...rest}
     >
       {children}
     </Component>
   );
-}
+});
+
+export { TypographyColor, TypographyVariant };
+export default Typography;

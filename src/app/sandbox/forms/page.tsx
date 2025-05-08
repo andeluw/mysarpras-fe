@@ -5,7 +5,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 import Button from '@/components/buttons/Button';
+import Checkbox from '@/components/forms/Checkbox';
+import HelperText from '@/components/forms/HelperText';
 import Input from '@/components/forms/Input';
+import { Label } from '@/components/forms/Label';
+import Radio from '@/components/forms/Radio';
+import Select from '@/components/forms/Select';
 import Textarea from '@/components/forms/Textarea';
 import UnderlineLink from '@/components/links/UnderlineLink';
 import Typography from '@/components/Typography';
@@ -21,7 +26,25 @@ interface FormValues {
   validation: string;
   helperValidation: string;
   password: string;
+  select: 'male' | 'female';
+  selectReadOnly: 'male' | 'female';
+  requiredSelect: string;
+  multiSelect: string[];
+  textarea: string;
+  checkbox: boolean;
+  pilihan: string;
 }
+
+const options = [
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+];
+
+const multiOptions = [
+  { label: 'Teater A', value: 'teatera' },
+  { label: 'Aula Handayani', value: 'aulahandayani' },
+  { label: 'Fasor', value: 'fasor' },
+];
 
 export default function InputSandbox() {
   const methods = useForm<FormValues>({
@@ -38,7 +61,7 @@ export default function InputSandbox() {
 
   return (
     <div className='min-h-screen bg-white py-20 layout'>
-      <Typography as='h1' variant='h5' weight='bold'>
+      <Typography as='h1' variant='h1'>
         Form Sandbox
       </Typography>
 
@@ -106,6 +129,67 @@ export default function InputSandbox() {
             validation={{ required: 'Textarea is required' }}
           />
 
+          <Select
+            id='select'
+            label='Normal Select'
+            options={options}
+            placeholder='Select gender'
+            helperText='This is some helper text'
+          />
+
+          {/* Readonly Select */}
+          <Select
+            id='selectReadOnly'
+            label='Read Only Select'
+            options={options}
+            readOnly
+            helperText='This is some helper text'
+          />
+
+          {/* Required Select */}
+          <Select
+            id='requiredSelect'
+            label='Required Select'
+            options={options}
+            placeholder='Select something'
+            helperText='This is some helper text'
+            validation={{ required: 'This field is required' }}
+          />
+
+          {/* Multi Select */}
+          <Select
+            id='multiSelect'
+            label='Multi Select'
+            isMulti
+            options={multiOptions}
+            helperText='This is some helper text'
+            placeholder='Pilih ruangan'
+          />
+
+          <div>
+            <Label required>Radio Button</Label>
+            <div className='flex gap-10 mt-1'>
+              <Radio
+                label='Pilihan 1'
+                name='pilihan'
+                value='1'
+                validation={{ required: 'Field must be filled' }}
+              />
+              <Radio label='Pilihan 2' name='pilihan' value='2' />
+            </div>
+            <HelperText helperTextClassName='mt-2'>
+              This is some helper text
+            </HelperText>
+          </div>
+
+          <Checkbox
+            label='Checkbox'
+            name='checkbox'
+            size='base'
+            value='checkbox'
+            validation={{ required: 'This field is required' }}
+          />
+
           <Button type='submit' className='w-full'>
             Submit
           </Button>
@@ -114,7 +198,7 @@ export default function InputSandbox() {
 
       {formOutput && (
         <div className='rounded-lg bg-white p-4 shadow mt-8'>
-          <Typography as='h2' variant='h6' weight='semibold' className='mb-2'>
+          <Typography as='h2' variant='h3' className='mb-2'>
             Submitted Data
           </Typography>
           <pre className='whitespace-pre-wrap text-sm text-gray-800'>
