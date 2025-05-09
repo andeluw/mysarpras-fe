@@ -33,12 +33,12 @@ const systemColors = [
 const primaryShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 const itsColors = [
-  'primary-main',
-  'primary-dark',
-  'primary-light',
-  'primary-active',
-  'secondary-main',
-  'secondary-dark',
+  'bg-primary-main',
+  'bg-primary-dark',
+  'bg-primary-light',
+  'bg-primary-active',
+  'bg-secondary-main',
+  'bg-secondary-dark',
 ];
 
 export default function Page() {
@@ -60,8 +60,8 @@ export default function Page() {
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
           {itsColors.map((color) => (
             <div key={color} className='flex items-center gap-4'>
-              <div className={`w-16 h-16 rounded-md border bg-${color}`} />
-              <span className='text-sm font-mono'>{color}</span>
+              <div className={`w-16 h-16 rounded-md border ${color}`} />
+              <span className='text-sm font-mono'>{color.slice(3)}</span>
             </div>
           ))}
         </div>

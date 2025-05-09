@@ -6,6 +6,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 import Button from '@/components/buttons/Button';
 import Checkbox from '@/components/forms/Checkbox';
+import DropzoneInput from '@/components/forms/DropzoneInput';
 import HelperText from '@/components/forms/HelperText';
 import Input from '@/components/forms/Input';
 import { Label } from '@/components/forms/Label';
@@ -14,6 +15,8 @@ import Select from '@/components/forms/Select';
 import Textarea from '@/components/forms/Textarea';
 import UnderlineLink from '@/components/links/UnderlineLink';
 import Typography from '@/components/Typography';
+
+import { FileWithPreview } from '@/types/dropzone';
 
 interface FormValues {
   basic: string;
@@ -26,13 +29,15 @@ interface FormValues {
   validation: string;
   helperValidation: string;
   password: string;
-  select: 'male' | 'female';
-  selectReadOnly: 'male' | 'female';
+  select: string;
+  selectReadOnly: string;
   requiredSelect: string;
   multiSelect: string[];
   textarea: string;
   checkbox: boolean;
   pilihan: string;
+  dropzone: FileWithPreview[];
+  dropzoneReadOnly: FileWithPreview[];
 }
 
 const options = [
@@ -47,11 +52,26 @@ const multiOptions = [
 ];
 
 export default function InputSandbox() {
+  const fileWithPreviewDemoList: FileWithPreview[] = Array.from(
+    { length: 3 },
+    (_, i) => {
+      const file = new File(['dummy content'], `test-${i}.jpg`, {
+        type: 'image/jpeg',
+      });
+
+      return Object.assign(file, {
+        preview: `https://picsum.photos/1200/800`,
+      });
+    }
+  );
+
   const methods = useForm<FormValues>({
     defaultValues: {
       readOnly: 'Hello',
+      dropzoneReadOnly: fileWithPreviewDemoList,
     },
   });
+
   const { handleSubmit } = methods;
   const [formOutput, setFormOutput] = useState<FormValues | null>(null);
 
@@ -137,7 +157,6 @@ export default function InputSandbox() {
             helperText='This is some helper text'
           />
 
-          {/* Readonly Select */}
           <Select
             id='selectReadOnly'
             label='Read Only Select'
@@ -146,7 +165,6 @@ export default function InputSandbox() {
             helperText='This is some helper text'
           />
 
-          {/* Required Select */}
           <Select
             id='requiredSelect'
             label='Required Select'
@@ -156,7 +174,6 @@ export default function InputSandbox() {
             validation={{ required: 'This field is required' }}
           />
 
-          {/* Multi Select */}
           <Select
             id='multiSelect'
             label='Multi Select'
@@ -181,6 +198,24 @@ export default function InputSandbox() {
               This is some helper text
             </HelperText>
           </div>
+
+          <DropzoneInput
+            id='dropzone'
+            label='Dropzone Input'
+            helperText='File harus berformat .jpg, .jpeg, .png dan maksimal 2MB'
+            validation={{ required: 'This field is required' }}
+            maxFiles={3}
+            maxSize={2 * 1024 * 1024} // 2MB
+          />
+
+          <DropzoneInput
+            id='dropzoneReadOnly'
+            label='Dropzone Input (Read Only)'
+            maxFiles={3}
+            helperText='File harus berformat .jpg, .jpeg, .png dan maksimal 2MB'
+            validation={{ required: 'This field is required' }}
+            readOnly
+          />
 
           <Checkbox
             label='Checkbox'

@@ -1,3 +1,4 @@
+'use client';
 import get from 'lodash.get';
 import { ChevronDown, X } from 'lucide-react';
 import type { RegisterOptions } from 'react-hook-form';
@@ -57,7 +58,7 @@ const Select = ({
       // red-500 and gray-300
       border: `solid ${error ? '2px #EF4444' : '1.5px #D1D5DB'}`,
       '&:hover': {
-        border: `solid ${error ? '#1.5px EF4444' : '2px #D1D5DB'}`,
+        border: `solid 2px ${error ? '#EF4444' : '#D1D5DB'}`,
       },
       boxShadow: 'none',
       transition: 'none',
@@ -181,7 +182,7 @@ const Select = ({
               <ReactSelect
                 {...field}
                 classNames={{
-                  control: () => '!min-h-[2.25rem] md:!min-h-[2.5rem]',
+                  control: () => '!h-[2.5rem]',
                 }}
                 closeMenuOnSelect={!isMulti}
                 components={{
