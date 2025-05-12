@@ -19,7 +19,7 @@ export default function Login() {
   return (
     <div className='flex min-h-screen'>
       {/* Left Section */}
-      <div className='w-1/2 bg-blue-600 flex items-center justify-center'>
+      <div className='w-1/2 bg-gradient-to-r from-primary-500 to-primary-700 flex items-center justify-center'>
         <Typography variant='h1' className='text-white' weight='bold'>
           mySarpras
         </Typography>
@@ -36,7 +36,13 @@ export default function Login() {
               type='email'
               label='Email'
               id='email'      
-              validation={{ required: true }}
+              validation={{ 
+                required: "Email wajib diisi",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Gunakan format email yang valid"
+                }
+              }}
               placeholder='Masukkan email anda'
               className='w-full'
             />
@@ -44,7 +50,9 @@ export default function Login() {
               type='password'
               label='Password'
               id='password'
-              validation={{ required: true }}
+              validation={{ 
+                required: "Password wajib diisi",
+              }}
               placeholder='Masukkan password anda'
               className='w-full'
             />
