@@ -1,5 +1,5 @@
 import { Eye, EyeOff, LucideIcon } from 'lucide-react';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { get, RegisterOptions, useFormContext } from 'react-hook-form';
 import { IconType } from 'react-icons';
 
@@ -27,151 +27,181 @@ export type InputProps = {
   labelTextClasname?: string;
 } & React.ComponentPropsWithoutRef<'input'>;
 
-export default function Input({
-  id,
-  label,
-  helperText,
-  hideError = false,
-  validation,
-  prefix,
-  suffix,
-  className,
-  type = 'text',
-  readOnly = false,
-  rightIcon: RightIcon,
-  leftIcon: LeftIcon,
-  rightIconClassName,
-  leftIconClassName,
-  labelTextClassName,
-  helperTextClassName,
-  ...rest
-}: InputProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      id,
+      label,
+      helperText,
+      hideError = false,
+      validation,
+      prefix,
+      suffix,
+      className,
+      type = 'text',
+      readOnly = false,
+      rightIcon: RightIcon,
+      leftIcon: LeftIcon,
+      rightIconClassName,
+      leftIconClassName,
+      labelTextClassName,
+      helperTextClassName,
+      ...rest
+    },
+    ref
+  ) => {
+    const formContext = useFormContext();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const error = get(errors, id);
+    const [showPassword, setShowPassword] = useState(false);
+    const error = formContext
+      ? get(formContext.formState.errors, id)
+      : undefined;
 
-  return (
-    <div className='w-full space-y-2'>
-      {label && (
-        <Label
-          required={validation?.required ? true : false}
-          className={labelTextClassName}
-        >
-          {label}
-        </Label>
-      )}
+    const registerResult = formContext
+      ? formContext.register(id, validation)
+      : { ref: undefined };
 
-      <div className='relative flex w-full gap-0'>
-        <div
-          className={cn(
-            'pointer-events-none absolute h-full w-full rounded-md border-input ring-1 ring-inset ring-input'
-          )}
-        />
+    const { ref: hookFormRef, ...inputRegisterProps } = registerResult;
 
-        {prefix && (
-          <Typography
-            variant='c1'
-            className='flex w-min items-center rounded-l-md bg-transparent px-3 text-sm text-muted-foreground'
+    return (
+      <div className='w-full space-y-2'>
+        {label && (
+          <Label
+            required={!!validation?.required}
+            className={labelTextClassName}
           >
-            {prefix}
-          </Typography>
+            {label}
+          </Label>
         )}
 
-        <div
-          className={cn(
-            'relative w-full rounded-md',
-            prefix && 'rounded-l-md',
-            suffix && 'rounded-r-md'
-          )}
-        >
-          {LeftIcon && (
-            <div
-              className={cn(
-                'absolute left-0 top-0 h-full',
-                'flex items-center justify-center pl-2.5',
-                'text-lg text-foreground md:text-xl',
-                leftIconClassName
-              )}
-            >
-              <LeftIcon />
-            </div>
-          )}
-
-          <input
-            {...register(id, validation)}
-            type={
-              type === 'password' ? (showPassword ? 'text' : 'password') : type
-            }
-            autoComplete={type === 'password' ? 'current-password' : undefined}
-            id={id}
-            name={id}
-            readOnly={readOnly}
-            disabled={readOnly}
+        <div className='relative flex w-full gap-0'>
+          <div
             className={cn(
-              'flex h-10 w-full rounded-md border-input bg-transparent px-3 py-1 text-base transition-colors file:py-1 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-              'hover:ring-[0.75px] hover:ring-inset hover:ring-input',
-              LeftIcon && 'pl-9',
-              RightIcon && 'pr-9',
-              readOnly && 'cursor-not-allowed',
-              error &&
-                'border-none ring-[1.25px] ring-inset ring-red-500 placeholder:text-muted-foreground focus:ring-red-500',
-              prefix && 'rounded-l-none rounded-r-md',
-              suffix && 'rounded-l-md rounded-r-none',
-              prefix && suffix && 'rounded-none',
-              className
+              'pointer-events-none absolute h-full w-full rounded-md border-input ring-1 ring-inset ring-input'
             )}
-            aria-describedby={id}
-            {...rest}
           />
 
-          {RightIcon && type !== 'password' && (
-            <div
-              className={cn(
-                'absolute bottom-0 right-0 h-full',
-                'flex items-center justify-center pr-2.5',
-                'text-lg text-foreground md:text-xl',
-                rightIconClassName
-              )}
+          {prefix && (
+            <Typography
+              variant='c1'
+              className='flex w-min items-center rounded-l-md bg-transparent px-3 text-sm text-muted-foreground'
             >
-              <RightIcon />
-            </div>
+              {prefix}
+            </Typography>
           )}
 
-          {type === 'password' && (
-            <div
+          <div
+            className={cn(
+              'relative w-full rounded-md',
+              prefix && 'rounded-l-md',
+              suffix && 'rounded-r-md'
+            )}
+          >
+            {LeftIcon && (
+              <div
+                className={cn(
+                  'absolute left-0 top-0 h-full',
+                  'flex items-center justify-center pl-2.5',
+                  'text-lg text-foreground md:text-xl',
+                  leftIconClassName
+                )}
+              >
+                <LeftIcon />
+              </div>
+            )}
+
+            <input
+              id={id}
+              type={
+                type === 'password'
+                  ? showPassword
+                    ? 'text'
+                    : 'password'
+                  : type
+              }
+              autoComplete={
+                type === 'password' ? 'current-password' : undefined
+              }
+              readOnly={readOnly}
+              disabled={readOnly}
               className={cn(
-                'absolute bottom-0 right-0 h-full',
-                'flex items-center justify-center pr-3',
-                'text-lg text-muted-foreground md:text-xl cursor-pointer',
-                rightIconClassName
+                'flex h-10 w-full rounded-md border-input bg-transparent px-3 py-1 text-base transition-colors file:py-1 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                'hover:ring-[0.75px] hover:ring-inset hover:ring-input',
+                LeftIcon && 'pl-9',
+                RightIcon && 'pr-9',
+                readOnly && 'cursor-not-allowed',
+                error &&
+                  'border-none ring-[1.25px] ring-inset ring-red-500 placeholder:text-muted-foreground focus:ring-red-500',
+                prefix && 'rounded-l-none rounded-r-md',
+                suffix && 'rounded-l-md rounded-r-none',
+                prefix && suffix && 'rounded-none',
+                className
               )}
-              onClick={() => setShowPassword(!showPassword)}
+              aria-describedby={id}
+              {...inputRegisterProps}
+              {...rest}
+              ref={(el) => {
+                if (hookFormRef) {
+                  hookFormRef(el);
+                }
+                if (typeof ref === 'function') {
+                  ref(el);
+                } else if (ref) {
+                  (
+                    ref as React.MutableRefObject<HTMLInputElement | null>
+                  ).current = el;
+                }
+              }}
+            />
+
+            {RightIcon && type !== 'password' && (
+              <div
+                className={cn(
+                  'absolute bottom-0 right-0 h-full',
+                  'flex items-center justify-center pr-2.5',
+                  'text-lg text-foreground md:text-xl',
+                  rightIconClassName
+                )}
+              >
+                <RightIcon />
+              </div>
+            )}
+
+            {type === 'password' && (
+              <div
+                className={cn(
+                  'absolute bottom-0 right-0 h-full',
+                  'flex items-center justify-center pr-3',
+                  'text-lg text-muted-foreground md:text-xl cursor-pointer',
+                  rightIconClassName
+                )}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye /> : <EyeOff />}
+              </div>
+            )}
+          </div>
+
+          {suffix && (
+            <Typography
+              variant='c1'
+              className='flex w-min items-center rounded-l-md bg-transparent px-3 text-sm text-muted-foreground'
             >
-              {showPassword ? <Eye /> : <EyeOff />}
-            </div>
+              {suffix}
+            </Typography>
           )}
         </div>
 
-        {suffix && (
-          <Typography
-            variant='c1'
-            className='flex w-min items-center rounded-l-md bg-transparent px-3 text-sm text-muted-foreground'
-          >
-            {suffix}
-          </Typography>
+        {!hideError && error && <ErrorMessage>{error.message}</ErrorMessage>}
+        {helperText && (
+          <HelperText helperTextClassName={cn(helperTextClassName)}>
+            {helperText}
+          </HelperText>
         )}
       </div>
+    );
+  }
+);
 
-      {!hideError && error && <ErrorMessage>{error.message}</ErrorMessage>}
-      {helperText && (
-        <HelperText helperTextClassName={cn(helperTextClassName)}>
-          {helperText}
-        </HelperText>
-      )}
-    </div>
-  );
-}
+Input.displayName = 'Input';
+export default Input;
