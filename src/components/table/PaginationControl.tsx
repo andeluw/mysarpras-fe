@@ -54,7 +54,7 @@ const PaginationControl = <T extends RowData>({
         {paginationControl.map((page, index) => (
           <Button
             className={cn(
-              currentPage === page && 'bg-primary-400',
+              currentPage === page && 'bg-primary-200',
               'min-w-[2rem]'
             )}
             key={index}

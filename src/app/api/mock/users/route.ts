@@ -18,9 +18,8 @@ const users: User[] = Array.from({ length: 100 }, (_, i) => ({
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const basePath = url.origin + url.pathname;
 
-  const pageSize = +(url.searchParams.get('page_size') || '10');
+  const pageSize = +(url.searchParams.get('per_page') || '10');
   const pageParam = url.searchParams.get('page');
   const pageNumber = pageParam ? +pageParam : null;
   const sort = url.searchParams.get('sort') as keyof User;
@@ -61,29 +60,15 @@ export async function GET(req: Request) {
     pageNumber * pageSize
   );
 
-  const getPageUrl = (page: number) => {
-    const params = new URLSearchParams(url.searchParams);
-    params.set('page', String(page));
-    return `${basePath}?${params.toString()}`;
-  };
-
-  const links = {
-    first: getPageUrl(1),
-    last: pageNumber < lastPage ? getPageUrl(lastPage) : null,
-    prev: pageNumber > 1 ? getPageUrl(pageNumber - 1) : undefined,
-    next: pageNumber < lastPage ? getPageUrl(pageNumber + 1) : undefined,
-  };
-
   return NextResponse.json({
     code: 200,
     status: 'OK',
     data: returnedData,
-    links,
     meta: {
       current_page: pageNumber,
       per_page: pageSize,
-      from: (pageNumber - 1) * pageSize + 1,
-      to: (pageNumber - 1) * pageSize + returnedData.length,
+      total_data: totalItems,
+      total_pages: lastPage,
     },
   });
 }

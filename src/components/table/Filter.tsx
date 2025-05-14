@@ -57,7 +57,7 @@ const Filter = <T extends RowData>({
         )}
       </div>
       <IconButton
-        className='bg-light hover:bg-light/90'
+        className='bg-light hover:bg-light/90 h-full'
         icon={Search}
         isLoading={isLoading}
         onClick={handleClickSearch}

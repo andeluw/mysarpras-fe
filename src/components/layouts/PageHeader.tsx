@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { adminBreadcrumb } from '@/lib/content/admin-breadcrumb';
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,17 +12,6 @@ import {
 } from '@/components/Breadcrumb';
 import { SidebarTrigger } from '@/components/layouts/Sidebar';
 import { Separator } from '@/components/Separator';
-
-const breadcrumbMap: Record<string, string> = {
-  '/admin': 'Dashboard',
-  '/admin/statistik': 'Statistik Analitik',
-  '/admin/peminjaman/ajuan': 'Ajuan Peminjaman',
-  '/admin/peminjaman/riwayat': 'Riwayat Peminjaman',
-  '/admin/peminjaman/buat': 'Buat Peminjaman',
-  '/admin/ruangan/jadwal-ketersediaan': 'Jadwal Ketersediaan',
-  '/admin/ruangan/daftar-ruangan': 'Daftar Ruangan',
-  '/admin/ruangan/tambah': 'Tambah Ruangan',
-};
 
 export type Crumb =
   | string
@@ -41,7 +32,7 @@ function normalizeBreadcrumbs(
     if (typeof crumb === 'string') {
       return {
         href: crumb,
-        label: breadcrumbMap[crumb] ?? crumb,
+        label: adminBreadcrumb[crumb] ?? crumb,
       };
     }
     return crumb;

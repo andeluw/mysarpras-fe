@@ -15,16 +15,10 @@ export interface PaginatedApiResponse<T> {
   code: number;
   status: string;
   data: T;
-  links: {
-    first: string;
-    last: null;
-    prev?: string;
-    next?: string;
-  };
   meta: {
     current_page: number;
     per_page: number;
-    from?: number;
-    to?: number;
+    total_data: number;
+    total_pages: number;
   };
 }

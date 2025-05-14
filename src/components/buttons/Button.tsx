@@ -18,6 +18,7 @@ const buttonVariants = [
   'dark',
   'destructive',
   'outlineblack',
+  'ghostblack',
 ] as ButtonVariant[];
 
 const buttonClassName = cva(
@@ -37,9 +38,12 @@ const buttonClassName = cva(
           'bg-white text-gray-700 border border-gray-300 hover:text-dark hover:bg-gray-100 active:bg-white/80 disabled:bg-gray-200 focus-visible:ring-gray-300',
         dark: 'bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm  disabled:bg-primary/90',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 disabled:bg-destructive/90 focus-visible:ring-destructive',
+          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 disabled:bg-destructive/90 focus-visible:ring-destructive border-destructive',
         outlineblack:
-          'text-black border-2 border-black hover:bg-gray-50 active:bg-gray-100 disabled:bg-gray-100 focus-visible:ring-gray-300',
+          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+        // 'text-black border-2 border-black hover:bg-gray-50 active:bg-gray-100 disabled:bg-gray-100 focus-visible:ring-gray-300',
+        ghostblack:
+          'hover:bg-accent hover:text-accent-foreground text-black shadow-none active:bg-accent/50 disabled:bg-accent/50',
       },
       size: {
         base: 'px-3 py-1.5 text-sm md:text-base',
