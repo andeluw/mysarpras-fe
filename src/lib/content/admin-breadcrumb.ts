@@ -1,0 +1,13 @@
+export const adminBreadcrumb: Record<string, string> = {
+  '/admin': 'Dashboard',
+  '/admin/profil': 'Profil Saya',
+  '/admin/profil/ubah-password': 'Ubah Password',
+  '/admin/peminjaman/ajuan': 'Ajuan Peminjaman',
+  '/admin/peminjaman/ajuan/[id]': 'Detail',
+  '/admin/peminjaman/riwayat': 'Riwayat Peminjaman',
+  '/admin/peminjaman/riwayat/[id]': 'Detail',
+  '/admin/peminjaman/buat': 'Buat Peminjaman',
+  '/admin/ruangan/jadwal-ketersediaan': 'Jadwal Ketersediaan',
+  '/admin/ruangan': 'Daftar Ruangan',
+  '/admin/ruangan/tambah': 'Tambah Ruangan',
+};

@@ -4,11 +4,16 @@ import axios, { AxiosError } from 'axios';
 import { UninterceptedApiError } from '@/types/api';
 
 /** Add NEXT_PUBLIC_MOCK_DEPLOYMENT_URL to your production deployment on vercel! */
-const baseURL = process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL
-  ? `https://${process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL}/api/mock`
-  : process.env.NEXT_PUBLIC_API_URL
-  ? `https://${process.env.NEXT_PUBLIC_API_URL}/api/mock`
-  : 'http://localhost:3000/api/mock';
+const baseURL =
+  process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL &&
+  process.env.NODE_ENV === 'production'
+    ? `https://${process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL}/api/mock`
+    : process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL &&
+      process.env.NODE_ENV !== 'production'
+    ? `http://${process.env.NEXT_PUBLIC_MOCK_DEPLOYMENT_URL}/api/mock`
+    : process.env.NEXT_PUBLIC_API_URL
+    ? `https://${process.env.NEXT_PUBLIC_API_URL}/api/mock`
+    : 'http://localhost:3000/api/mock';
 
 export const apiMock = axios.create({
   baseURL,

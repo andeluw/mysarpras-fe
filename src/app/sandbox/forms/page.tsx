@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import { FormProvider, useForm } from 'react-hook-form';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 import Button from '@/components/buttons/Button';
+import { DatePicker } from '@/components/DatePicker';
 import Checkbox from '@/components/forms/Checkbox';
 import DropzoneInput from '@/components/forms/DropzoneInput';
 import HelperText from '@/components/forms/HelperText';
@@ -38,6 +40,9 @@ interface FormValues {
   pilihan: string;
   dropzone: FileWithPreview[];
   dropzoneReadOnly: FileWithPreview[];
+  dateSingle: Date;
+  dateRange: DateRange;
+  dateWithProps: DateRange;
 }
 
 const options = [
@@ -52,6 +57,16 @@ const multiOptions = [
 ];
 
 export default function InputSandbox() {
+  const [baseSingleDate, setBaseSingleDate] = useState<Date | undefined>(
+    undefined
+  );
+  const [baseRangeDate, setBaseRangeDate] = useState<DateRange | undefined>(
+    undefined
+  );
+  const [baseWithPropsDate, setBaseWithPropsDate] = useState<
+    DateRange | undefined
+  >(undefined);
+
   const fileWithPreviewDemoList: FileWithPreview[] = Array.from(
     { length: 3 },
     (_, i) => {
@@ -223,6 +238,44 @@ export default function InputSandbox() {
             size='base'
             value='checkbox'
             validation={{ required: 'This field is required' }}
+          />
+
+          <DatePicker
+            name='dateSingle'
+            label='RHF (Single)'
+            validation={{ required: 'This field is required' }}
+          />
+
+          <DatePicker name='dateRange' label='RHF (Range)' range />
+
+          <DatePicker
+            name='dateWithProps'
+            label='RHF (With Calendar Props)'
+            range
+            numberOfMonths={2}
+            disabled={(date) => date.getDay() === 0}
+          />
+
+          <DatePicker
+            label='Base (Single)'
+            value={baseSingleDate}
+            onChange={(d) => setBaseSingleDate(d as Date)}
+          />
+
+          <DatePicker
+            label='Base (Range)'
+            range
+            value={baseRangeDate}
+            onChange={(d) => setBaseRangeDate(d as DateRange)}
+          />
+
+          <DatePicker
+            label='Base (With Calendar Props)'
+            range
+            numberOfMonths={2}
+            disabled={(date) => date.getDay() === 6}
+            value={baseWithPropsDate}
+            onChange={(d) => setBaseWithPropsDate(d as DateRange)}
           />
 
           <Button type='submit' className='w-full'>

@@ -10,8 +10,12 @@ export const adminNav = {
           exactMatch: true,
         },
         {
-          title: 'Statistik Analitik',
-          url: '/admin/statistik',
+          title: 'Profil Saya',
+          url: '/admin/profil',
+        },
+        {
+          title: 'Ubah Password',
+          url: '/admin/ubah-password',
         },
       ],
     },
@@ -43,7 +47,8 @@ export const adminNav = {
         },
         {
           title: 'Daftar Ruangan',
-          url: '/admin/ruangan/daftar-ruangan',
+          url: '/admin/ruangan',
+          exactMatch: true,
         },
         {
           title: 'Tambah Ruangan',

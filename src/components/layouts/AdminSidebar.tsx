@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 
-import { adminNav } from '@/lib/admin-nav';
+import { adminNav } from '@/lib/content/admin-nav';
 
 import {
   Collapsible,

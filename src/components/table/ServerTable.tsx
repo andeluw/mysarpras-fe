@@ -20,23 +20,7 @@ import Typography from '@/components/Typography';
 
 import { LOCALE } from '@/constant/common';
 
-interface PaginatedApiResponse<T> {
-  code: number;
-  status: string;
-  data: T;
-  links: {
-    first: string;
-    last: null;
-    prev?: string;
-    next?: string;
-  };
-  meta: {
-    current_page: number;
-    per_page: number;
-    from?: number;
-    to?: number;
-  };
-}
+import { PaginatedApiResponse } from '@/types/api';
 
 export interface ServerTableState {
   globalFilter: string;
@@ -44,15 +28,8 @@ export interface ServerTableState {
   sorting: SortingState;
 }
 
-export interface ServerTableMeta {
-  last_page: number;
-  total: number;
-  from?: number;
-  to?: number;
-}
-
 interface CustomTableMeta<T> {
-  getRowStyles?: (row: Row<PaginatedApiResponse<T>>) => CSSProperties;
+  getRowStyles?: (row: Row<T>) => CSSProperties;
 }
 
 type ConditionalStyles<T> = (row: Row<T>) => CSSProperties;
@@ -95,7 +72,11 @@ const ServerTable = <T extends object>({
 }: ServerTableProps<T>) => {
   const data = response?.data || [];
   const meta = response?.meta;
-  const links = response?.links;
+
+  const from = meta ? (meta.current_page - 1) * meta.per_page + 1 : 0;
+  const to = meta
+    ? Math.min(meta.current_page * meta.per_page, meta.total_data)
+    : 0;
 
   const table = useReactTable({
     data,
@@ -113,6 +94,7 @@ const ServerTable = <T extends object>({
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
     manualSorting: true,
+    pageCount: meta?.total_pages || 0,
     meta: {
       getRowStyles: (row: Row<T>): CSSProperties =>
         conditionalStyles ? conditionalStyles(row) : {},
@@ -156,10 +138,10 @@ const ServerTable = <T extends object>({
           'mt-2 overflow-x-auto',
 
           // to allow table to overflow on right side (desktop) and/or both side (mobile)
-          '-mx-[4%] md:-mr-[2.5%]',
+          '-mx-[4%] sm:-mr-[2.5%]',
 
           // set enough space so the the drop-shadow is not cropped
-          'md:-ml-[2px] md:pl-[2px]',
+          'sm:-ml-[2px] sm:pl-[2px]',
         ])}
       >
         <div className='inline-block min-w-full py-2 align-middle'>
@@ -177,47 +159,52 @@ const ServerTable = <T extends object>({
         </div>
       </div>
 
-      {(Boolean(meta?.from) || Boolean(meta?.to)) && (
+      {meta && meta.total_data && meta.total_data > 0 ? (
         <Typography
           className='mt-2 md:text-right'
           color='tertiary'
           variant='b3'
         >
-          Menampilkan data urutan{' '}
+          Menampilkan data{' '}
           <span className='font-medium text-typo'>
-            {meta?.from?.toLocaleString(LOCALE)}
+            {from.toLocaleString(LOCALE)}
           </span>{' '}
           sampai{' '}
           <span className='font-medium text-typo'>
-            {meta?.to?.toLocaleString(LOCALE)}
+            {to.toLocaleString(LOCALE)}
           </span>{' '}
+          dari{' '}
+          <span className='font-medium text-typo'>
+            {meta.total_data.toLocaleString(LOCALE)}
+          </span>{' '}
+          entri
         </Typography>
-      )}
+      ) : null}
 
-      <div className='flex items-center justify-between gap-x-2 mt-6 md:justify-end'>
-        <div className='flex gap-1'>
-          <Button
-            disabled={!links?.prev}
-            leftIcon={ChevronLeft}
-            onClick={() => table.previousPage()}
-            size='sm'
-            variant='ghost'
-          >
-            Prev
-          </Button>
-          <Button
-            disabled={
-              !links?.next || data.length < table.getState().pagination.pageSize
-            }
-            onClick={() => table.nextPage()}
-            rightIcon={ChevronRight}
-            size='sm'
-            variant='ghost'
-          >
-            Next
-          </Button>
+      {meta && meta.total_data && meta.total_data > 0 ? (
+        <div className='flex items-center justify-between gap-x-2 mt-6 md:justify-end'>
+          <div className='flex gap-1'>
+            <Button
+              disabled={meta?.current_page === 1}
+              leftIcon={ChevronLeft}
+              onClick={() => table.previousPage()}
+              size='sm'
+              variant='ghost'
+            >
+              Prev
+            </Button>
+            <Button
+              disabled={meta?.current_page === meta?.total_pages}
+              onClick={() => table.nextPage()}
+              rightIcon={ChevronRight}
+              size='sm'
+              variant='ghost'
+            >
+              Next
+            </Button>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };

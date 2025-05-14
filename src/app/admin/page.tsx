@@ -1,14 +1,22 @@
 import {
   Building2,
   CalendarCheck2,
-  ChartColumn,
   FileInput,
   FilePlus,
   History,
   HousePlus,
+  LockKeyhole,
+  User,
 } from 'lucide-react';
 import { Metadata } from 'next';
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/Card';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Typography from '@/components/Typography';
@@ -55,7 +63,7 @@ const availablePages = [
       },
       {
         title: 'Daftar Ruangan',
-        url: '/admin/ruangan/daftar-ruangan',
+        url: '/admin/ruangan',
         caption: 'Lihat dan kelola semua ruangan yang ada',
         icon: Building2,
       },
@@ -68,14 +76,20 @@ const availablePages = [
     ],
   },
   {
-    title: 'Analisis Peminjaman',
-    caption: 'Data statistik dan laporan penggunaan ruangan',
+    title: 'Manajemen Akun',
+    caption: 'Kelola informasi dan kredensial akun administrator',
     pages: [
       {
-        title: 'Statistik Analitik',
-        url: '/admin/statistik',
-        caption: 'Hasil rekapitulasi aktivitas peminjaman',
-        icon: ChartColumn,
+        title: 'Profil Saya',
+        url: '/admin/profil',
+        caption: 'Lihat dan perbarui detail akun admin Anda',
+        icon: User,
+      },
+      {
+        title: 'Ubah Password',
+        url: '/admin/ubah-password',
+        caption: 'Perbarui kata sandi untuk keamanan akun Anda',
+        icon: LockKeyhole,
       },
     ],
   },
@@ -83,21 +97,19 @@ const availablePages = [
 
 export default function Page() {
   return (
-    <AdminLayout breadcrumbs={['/admin']} title='Dashboard Admin'>
+    <AdminLayout
+      breadcrumbs={['/admin']}
+      title='Dashboard Admin'
+      subheading='Selamat datang di dashboard admin. Kelola semua proses peminjaman ruangan dengan mudah.'
+    >
       <div className='flex flex-col gap-8'>
         {availablePages.map((section) => (
-          <div
-            key={section.title}
-            className='flex flex-col gap-1 bg-white py-6 px-8 rounded-lg shadow-md'
-          >
-            <Typography variant='h2'>{section.title}</Typography>
-            <Typography
-              variant='s3'
-              className='text-muted-foreground font-normal'
-            >
-              {section.caption}
-            </Typography>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-3'>
+          <Card key={section.title}>
+            <CardHeader>
+              <CardTitle>{section.title}</CardTitle>
+              <CardDescription>{section.caption}</CardDescription>
+            </CardHeader>
+            <CardContent className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
               {section.pages.map((page) => (
                 <UnstyledLink
                   key={page.title}
@@ -118,8 +130,8 @@ export default function Page() {
                   </Typography>
                 </UnstyledLink>
               ))}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </AdminLayout>
