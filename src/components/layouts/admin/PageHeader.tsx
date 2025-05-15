@@ -10,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/Breadcrumb';
-import { SidebarTrigger } from '@/components/layouts/Sidebar';
+import { SidebarTrigger } from '@/components/layouts/admin/Sidebar';
 import { Separator } from '@/components/Separator';
 
 export type Crumb =

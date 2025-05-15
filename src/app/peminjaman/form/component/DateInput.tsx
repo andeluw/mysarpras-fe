@@ -78,7 +78,7 @@ export const DateInput: React.FC<CalendarIconProps> = ({
             onSelect={handleDaySelect}
             disabled={{ before: new Date() }}
             styles={{
-              month_caption: { padding: '13px' },
+              caption: { padding: '13px' },
             }}
           />
         </div>

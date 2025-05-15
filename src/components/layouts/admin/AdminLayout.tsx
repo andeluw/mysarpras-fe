@@ -1,8 +1,11 @@
 import { ArrowLeft } from 'lucide-react';
 
-import { AdminSidebar } from '@/components/layouts/AdminSidebar';
-import { Crumb, PageHeader } from '@/components/layouts/PageHeader';
-import { SidebarInset, SidebarProvider } from '@/components/layouts/Sidebar';
+import { AdminSidebar } from '@/components/layouts/admin/AdminSidebar';
+import { Crumb, PageHeader } from '@/components/layouts/admin/PageHeader';
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@/components/layouts/admin/Sidebar';
 import IconLink from '@/components/links/IconLink';
 import { Skeleton } from '@/components/Skeleton';
 import Typography from '@/components/Typography';

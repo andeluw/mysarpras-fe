@@ -23,7 +23,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from '@/components/layouts/Sidebar';
+} from '@/components/layouts/admin/Sidebar';
+import UnstyledLink from '@/components/links/UnstyledLink';
 import Typography from '@/components/Typography';
 
 export function AdminSidebar({
@@ -35,7 +36,10 @@ export function AdminSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className='flex py-3 px-1 items-center gap-1'>
+            <UnstyledLink
+              href='/'
+              className='flex py-3 px-1 items-center gap-1'
+            >
               <Image
                 src='/images/logo.png'
                 alt='Logo'
@@ -46,7 +50,7 @@ export function AdminSidebar({
               <Typography variant='h3' className='text-primary-800 font-bold'>
                 mySarpras
               </Typography>
-            </div>
+            </UnstyledLink>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

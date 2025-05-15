@@ -2,7 +2,7 @@ import React from 'react';
 
 import Input from '@/components/forms/Input';
 
-import { DateInput } from '@/app/room-request/component/DateInput';
+import { DateInput } from '@/app/peminjaman/form/component/DateInput';
 
 interface DateSelectorProps {
   selectedDate: Date;

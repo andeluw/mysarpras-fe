@@ -18,7 +18,7 @@ import {
 } from '@/components/Card';
 import { DatePicker } from '@/components/DatePicker';
 import Select from '@/components/forms/Select';
-import AdminLayout from '@/components/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import { ScrollArea, ScrollBar } from '@/components/ScrollArea';
 import Typography from '@/components/Typography';

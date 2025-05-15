@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/Card';
-import AdminLayout from '@/components/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Typography from '@/components/Typography';
 
