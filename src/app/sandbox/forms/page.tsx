@@ -84,6 +84,7 @@ export default function InputSandbox() {
     defaultValues: {
       readOnly: 'Hello',
       dropzoneReadOnly: fileWithPreviewDemoList,
+      dateSingle: new Date(),
     },
   });
 

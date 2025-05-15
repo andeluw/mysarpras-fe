@@ -51,7 +51,7 @@ api.interceptors.response.use(
     return config;
   },
   (error: AxiosError<UninterceptedApiError>) => {
-    if (error.response?.data.message) {
+    if (error.response?.data.error) {
       return Promise.reject({
         ...error,
         response: {
@@ -59,9 +59,9 @@ api.interceptors.response.use(
           data: {
             ...error.response.data,
             message:
-              typeof error.response.data.message === 'string'
-                ? error.response.data.message
-                : Object.values(error.response.data.message)[0][0],
+              typeof error.response.data.error === 'string'
+                ? error.response.data.error
+                : Object.values(error.response.data.error)[0][0],
           },
         },
       });

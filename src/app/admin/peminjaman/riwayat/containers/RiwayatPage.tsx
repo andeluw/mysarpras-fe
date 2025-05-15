@@ -5,6 +5,11 @@ import { Eye } from 'lucide-react';
 import React from 'react';
 
 import api from '@/lib/api';
+import {
+  formatDateToLocalYYYYMMDD,
+  formatDateUTC,
+  formatTimeRangeUTC,
+} from '@/lib/date';
 import { buildPaginatedTableURL } from '@/lib/table';
 import useServerTable from '@/hooks/useServerTable';
 
@@ -16,7 +21,6 @@ import { ServerTable } from '@/components/table/ServerTable';
 import Typography from '@/components/Typography';
 
 import StatusChip from '@/app/admin/peminjaman/components/StatusChip';
-import { LOCALE } from '@/constant/common';
 import { jenisKegiatanOptions } from '@/constant/selectoption';
 
 import { PaginatedApiResponse } from '@/types/api';
@@ -46,12 +50,7 @@ export default function RiwayatPage() {
       accessorKey: 'tanggal',
       header: 'Tanggal',
       cell: ({ getValue }) => {
-        const date = new Date(getValue() as string).toLocaleDateString(LOCALE, {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        });
-        return <Typography>{date}</Typography>;
+        return <Typography>{formatDateUTC(getValue() as Date)}</Typography>;
       },
     },
     {
@@ -59,18 +58,7 @@ export default function RiwayatPage() {
       id: 'jam',
       cell: ({ row }) => {
         const { jamAwal, jamAkhir } = row.original;
-        const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        });
-        const start = timeFormatter.format(new Date(jamAwal));
-        const end = timeFormatter.format(new Date(jamAkhir));
-        return (
-          <Typography>
-            {start} - {end}
-          </Typography>
-        );
+        return <Typography>{formatTimeRangeUTC(jamAwal, jamAkhir)}</Typography>;
       },
     },
     {
@@ -140,11 +128,7 @@ export default function RiwayatPage() {
           ? filterQuery.status
           : ['approved', 'rejected', 'canceled'],
       jenisKegiatan: filterQuery.jenisKegiatan,
-      tanggal: date
-        ? new Date(date.getTime() + 24 * 60 * 60 * 1000)
-            .toISOString()
-            .split('T')[0]
-        : undefined,
+      tanggal: date ? formatDateToLocalYYYYMMDD(date) : undefined,
     },
   });
 

@@ -1,4 +1,4 @@
-export const timeSlotsOptions = Array.from({ length: 11 }, (_, i) => ({
+export const timeSlotsOptions = Array.from({ length: 15 }, (_, i) => ({
   value: `${i + 7}`,
   label: `${i + 7}:00`,
 }));

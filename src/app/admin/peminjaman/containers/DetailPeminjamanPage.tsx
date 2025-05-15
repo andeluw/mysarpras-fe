@@ -1,6 +1,8 @@
 'use client';
 import { Ban, Check, X } from 'lucide-react';
 
+import { formatDateUTC, formatTimeRangeUTC } from '@/lib/date';
+
 import {
   Card,
   CardContent,
@@ -12,7 +14,6 @@ import Typography from '@/components/Typography';
 
 import StatusChip from '@/app/admin/peminjaman/components/StatusChip';
 import UpdateStatusModal from '@/app/admin/peminjaman/components/UpdateStatusModal';
-import { LOCALE } from '@/constant/common';
 
 import { Peminjaman } from '@/types/peminjaman';
 
@@ -49,27 +50,13 @@ export default function DetailPeminjamanPage({
     },
     {
       title: 'Tanggal',
-      value: data?.tanggal
-        ? new Date(data.tanggal).toLocaleDateString(LOCALE, {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          })
-        : '-',
+      value: data?.tanggal ? formatDateUTC(data.tanggal) : '-',
     },
     {
       title: 'Jam',
       value:
         data?.jamAwal && data?.jamAkhir
-          ? `${new Date(data.jamAwal).toLocaleTimeString(LOCALE, {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })} - ${new Date(data.jamAkhir).toLocaleTimeString(LOCALE, {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}`
+          ? formatTimeRangeUTC(data.jamAwal, data.jamAkhir)
           : '-',
     },
     {

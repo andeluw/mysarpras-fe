@@ -82,8 +82,16 @@ export function DatePicker({
           return true;
         },
       });
+
+      if (form.getValues(name!) === undefined && value) {
+        form.setValue(name!, value, {
+          shouldDirty: false,
+          shouldTouch: false,
+          shouldValidate: false,
+        });
+      }
     }
-  }, [form, name, validation, range, isUsingRHF]);
+  }, [form, name, validation, range, isUsingRHF, value]);
 
   const renderLabel = () => {
     if (range && (dateValue as DateRange)?.from) {
