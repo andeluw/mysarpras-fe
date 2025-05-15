@@ -14,7 +14,7 @@ export default function useGetPeminjamanDetail(id: string) {
   } = useQuery<ApiResponse<Peminjaman>, AxiosError<ApiError>>({
     queryKey: ['peminjaman', 'detail', id],
     queryFn: async () => {
-      const res = await api.get(`/peminjaman/${id}`);
+      const res = await api.get(`/peminjaman/detail/${id}`);
       return res.data;
     },
     enabled: !!id,

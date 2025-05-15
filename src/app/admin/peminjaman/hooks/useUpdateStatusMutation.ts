@@ -50,7 +50,7 @@ export default function useUpdateStatusMutation({ id }: { id: number }) {
     },
     onError: (error) => {
       toast.error(
-        error.response?.data.message || 'Terjadi kesalahan. Silakan coba lagi'
+        error.response?.data.error || 'Terjadi kesalahan. Silakan coba lagi'
       );
     },
   });
