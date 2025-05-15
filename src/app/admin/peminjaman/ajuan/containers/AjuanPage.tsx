@@ -14,7 +14,7 @@ import { buildPaginatedTableURL } from '@/lib/table';
 import useServerTable from '@/hooks/useServerTable';
 
 import { DatePicker } from '@/components/DatePicker';
-import AdminLayout from '@/components/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import IconLink from '@/components/links/IconLink';
 import { PopupFilter, PopupFilterProps } from '@/components/table/PopupFilter';
 import { ServerTable } from '@/components/table/ServerTable';

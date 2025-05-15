@@ -7,10 +7,10 @@ import toast from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
 
-import DateSelector from '@/app/room-request/component/DateSelector';
-import KegiatanSelector from '@/app/room-request/component/KegiatanSelector';
-import RoomSelector from '@/app/room-request/component/RoomSelector';
-import TimeSelector from '@/app/room-request/component/TimeSelector';
+import DateSelector from '@/app/peminjaman/form/component/DateSelector';
+import KegiatanSelector from '@/app/peminjaman/form/component/KegiatanSelector';
+import RoomSelector from '@/app/peminjaman/form/component/RoomSelector';
+import TimeSelector from '@/app/peminjaman/form/component/TimeSelector';
 import {
   jenisKegiatanOptions,
   ruanganOptions,

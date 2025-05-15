@@ -3,8 +3,6 @@ import * as React from 'react';
 
 import '@/styles/globals.css';
 
-import Navbar from '@/components/Navbar';
-
 import Providers from '@/app/providers';
 import { siteConfig } from '@/constant/config';
 
@@ -51,7 +49,6 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Navbar />
         <Providers>{children}</Providers>
       </body>
     </html>

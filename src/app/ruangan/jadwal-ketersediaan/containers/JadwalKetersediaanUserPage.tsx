@@ -18,6 +18,7 @@ import {
 } from '@/components/Card';
 import { DatePicker } from '@/components/DatePicker';
 import Select from '@/components/forms/Select';
+import UserLayout from '@/components/layouts/user/UserLayout';
 import PrimaryLink from '@/components/links/PrimaryLink';
 import { ScrollArea, ScrollBar } from '@/components/ScrollArea';
 import Typography from '@/components/Typography';
@@ -105,7 +106,8 @@ export default function JadwalKetersediaanPage() {
   });
 
   return (
-    <div className='px-8 py-12 md:px-20 md:py-16'>
+    <UserLayout>
+      {/* <div className='px-8 py-12 md:px-20 md:py-16'> */}
       <div className='flex flex-col gap-2'>
         <Typography variant='j2' className='text-primary-800'>
           Ketersediaan Ruangan
@@ -211,6 +213,7 @@ export default function JadwalKetersediaanPage() {
           </ScrollArea>
         </CardContent>
       </Card>
-    </div>
+      {/* </div> */}
+    </UserLayout>
   );
 }

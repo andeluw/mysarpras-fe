@@ -1,7 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 
-import AdminLayout from '@/components/layouts/AdminLayout';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 
 import DetailPeminjamanPage from '@/app/admin/peminjaman/containers/DetailPeminjamanPage';
 import useGetPeminjamanDetail from '@/app/admin/peminjaman/hooks/useGetPeminjamanDetail';
