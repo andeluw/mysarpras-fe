@@ -19,7 +19,6 @@ export default function RoomSelector({
       placeholder={
         selectedDate ? 'Pilih ruangan' : 'Pilih tanggal terlebih dahulu'
       }
-      isMulti
       isDisabled={!selectedDate}
     />
   );

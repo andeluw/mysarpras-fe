@@ -17,11 +17,19 @@ import {
   timeSlotsOptions,
 } from '@/constant/selectoption';
 
-import { Peminjaman } from '@/types/test/mock';
-import { getPeminjamanByRuanganId } from '@/types/test/mock';
+import { Peminjaman } from '@/types/peminjaman';
+import { getRuanganById } from '@/types/test/mock';
+
+type RoomRequestFormData = {
+  dateField: Date;
+  jamAwalSelect: string;
+  ruanganSelect: string;
+  jenisKegiatanSelect: string;
+  deskripsi?: string;
+};
 
 export default function RoomRequestForm() {
-  const methods = useForm({
+  const methods = useForm<RoomRequestFormData>({
     mode: 'onChange',
   });
   const { setValue, watch } = methods;
@@ -39,11 +47,17 @@ export default function RoomRequestForm() {
 
     try {
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const promises = ruanganOptions.map((room) =>
-        getPeminjamanByRuanganId(parseInt(room.value), formattedDate)
-      );
+      const promises = ruanganOptions.map(async (room) => {
+        const ruangan = await getRuanganById(room.value);
+        return (
+          ruangan?.Peminjaman.filter(
+            (booking) =>
+              format(new Date(booking.tanggal), 'yyyy-MM-dd') === formattedDate
+          ) || []
+        );
+      });
       const responses = await Promise.all(promises);
-      const allBookings = responses.flatMap((response) => response.data);
+      const allBookings = responses.flat();
       setBookings(allBookings);
     } catch (error) {
       toast.error(String(error));
@@ -57,8 +71,8 @@ export default function RoomRequestForm() {
   const getAvailableTimeSlots = () => {
     const bookedSlots = bookings.map((booking) => ({
       roomId: booking.Ruangan_idRuangan,
-      start: normalizeTime(booking.jamAwal),
-      end: normalizeTime(booking.jamAkhir),
+      start: normalizeTime(booking.jamAwal.toString()),
+      end: normalizeTime(booking.jamAkhir.toString()),
     }));
 
     return timeSlotsOptions.filter((slot) => {
@@ -75,8 +89,8 @@ export default function RoomRequestForm() {
     const hour = parseInt(selectedTime);
     const bookedRoomIds = bookings
       .filter((booking) => {
-        const start = normalizeTime(booking.jamAwal);
-        const end = normalizeTime(booking.jamAkhir);
+        const start = normalizeTime(booking.jamAwal.toString());
+        const end = normalizeTime(booking.jamAkhir.toString());
         return hour >= start && hour < end;
       })
       .map((booking) => booking.Ruangan_idRuangan.toString());
