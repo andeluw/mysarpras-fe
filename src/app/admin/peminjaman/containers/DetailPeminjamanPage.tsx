@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/Card';
+import withAuth from '@/components/hoc/withAuth';
 import Typography from '@/components/Typography';
 
 import StatusChip from '@/app/admin/peminjaman/components/StatusChip';
@@ -17,11 +18,8 @@ import UpdateStatusModal from '@/app/admin/peminjaman/components/UpdateStatusMod
 
 import { Peminjaman } from '@/types/peminjaman';
 
-export default function DetailPeminjamanPage({
-  data,
-}: {
-  data: Peminjaman | undefined;
-}) {
+export default withAuth(DetailPeminjamanPage, 'admin');
+function DetailPeminjamanPage({ data }: { data: Peminjaman | undefined }) {
   const userData = [
     {
       title: 'Nama',

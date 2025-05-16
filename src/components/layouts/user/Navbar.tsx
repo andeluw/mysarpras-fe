@@ -31,6 +31,8 @@ import { Separator } from '@/components/Separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/Sheet';
 import Typography from '@/components/Typography';
 
+import useAuthStore from '@/stores/useAuthStore';
+
 export const mainNav = {
   navMain: [
     {
@@ -94,19 +96,14 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const user = useAuthStore.useUser();
+  const logout = useAuthStore.useLogout();
+
   const isActive = (url: string, exactMatch?: boolean) => {
     if (exactMatch) {
       return pathname === url;
     }
     return pathname.startsWith(url) && url !== '/';
-  };
-
-  const user = {
-    namaUser: 'Budi Santoso',
-    email: 'dosen@example.com',
-    noTelp: null,
-    role: 'dosen',
-    kartuTandaPengenal: `${process.env.NEXT_PUBLIC_API_URL}/uploads/user/ff41271d-1d79-4b02-a230-6ae5f3183b4c.png`,
   };
 
   return (
@@ -219,12 +216,11 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  onClick={() => {}}
-                  className='text-destructive focus:text-destructive cursor-pointer'
+                  className='cursor-pointer text-destructive focus:text-destructive'
+                  onClick={() => logout()}
                 >
                   <LogOut className='mr-0.5 h-4 w-4' />
-                  <Typography variant='s3'>Keluar</Typography>
+                  <Typography variant='s3'>Logout</Typography>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -307,11 +303,10 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
                 <Button
                   variant='destructive'
                   className='w-full flex items-center justify-center gap-2'
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  onClick={() => {}}
+                  onClick={() => logout()}
                 >
                   <LogOut className='h-4 w-4' />
-                  <span>Keluar</span>
+                  <span>Logout</span>
                 </Button>
               </div>
             ) : (

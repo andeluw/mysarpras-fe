@@ -1,12 +1,14 @@
 'use client';
 import { useParams } from 'next/navigation';
 
+import withAuth from '@/components/hoc/withAuth';
 import AdminLayout from '@/components/layouts/admin/AdminLayout';
 
 import DetailPeminjamanPage from '@/app/admin/peminjaman/containers/DetailPeminjamanPage';
 import useGetPeminjamanDetail from '@/app/admin/peminjaman/hooks/useGetPeminjamanDetail';
 
-export default function DetailRiwayatPage() {
+export default withAuth(DetailRiwayatPage, 'admin');
+function DetailRiwayatPage() {
   const { id } = useParams<{ id: string }>();
   const { peminjamanDetail, isLoading } = useGetPeminjamanDetail(id);
   return (

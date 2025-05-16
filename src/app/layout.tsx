@@ -3,6 +3,8 @@ import * as React from 'react';
 
 import '@/styles/globals.css';
 
+import Loading from '@/components/Loading';
+
 import Providers from '@/app/providers';
 import { siteConfig } from '@/constant/config';
 
@@ -49,7 +51,9 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Providers>{children}</Providers>
+        <React.Suspense fallback={<Loading />}>
+          <Providers>{children}</Providers>
+        </React.Suspense>
       </body>
     </html>
   );
