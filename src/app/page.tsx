@@ -1,74 +1,101 @@
-import { ChevronRight, TriangleAlert } from 'lucide-react';
+import { ArrowRight, Hotel } from 'lucide-react';
+import Image from 'next/image';
 
+import { Navbar } from '@/components/layouts/user/Navbar';
 import ButtonLink from '@/components/links/ButtonLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
+import Typography from '@/components/Typography';
 
 export default function HomePage() {
   return (
-    <div className='flex flex-col lg:flex-row pt-20 w-full min-h-screen bg-gray-200'>
-      <div></div>
-
-      <div className='w-full flex items-center justify-center px-11 py-64'>
-        <div className='w-full flex flex-col gap-4'>
-          <h1 className='font-normal text-7xl'>MySarpras</h1>
-          <p className='font-light text-xl'>Klik. Pilih. Pinjam. Selesai</p>
-          <ButtonLink
-            href='/room-request'
-            className='max-w-52 items-center flex flex-row justify-center p-3'
-          >
-            Book Now <ChevronRight />
-          </ButtonLink>
+    <main>
+      <Navbar />
+      <div className='flex items-center justify-center w-full h-[calc(100vh-81px)] bg-primary-50'>
+        <div className='flex flex-col-reverse lg:flex-row gap-4 px-12 lg:gap-32 items-center justify-center w-full pb-20'>
+          <div className='flex flex-col gap-3 md:gap-5 items-center justify-center lg:items-start text-center lg:text-left'>
+            <Typography
+              variant='j2'
+              className='text-primary-800 md:text-4xl lg:text-5xl'
+            >
+              mySarpras
+            </Typography>
+            <Typography variant='h3' className='text-primary md:text-3xl'>
+              Klik. Pilih. Pinjam. Selesai.
+            </Typography>
+            <div className='flex flex-col gap-3 md:gap-5 md:flex-row items-center justify-center lg:items-start'>
+              <ButtonLink
+                href='/peminjaman/form'
+                className='w-full lg:w-fit'
+                rightIcon={ArrowRight}
+              >
+                Pesan Sekarang
+              </ButtonLink>
+              <ButtonLink
+                href='/ruangan/jadwal-ketersediaan'
+                className='w-full lg:w-fit'
+                variant='secondary'
+                rightIcon={Hotel}
+              >
+                Cek Jadwal Ruangan
+              </ButtonLink>
+            </div>
+          </div>
+          <Image
+            src='/images/homepage.png'
+            alt='Landing Page'
+            width={500}
+            height={500}
+            className='w-[200px] md:w-[300px] lg:w-[400px] object-cover'
+            priority
+          />
         </div>
       </div>
-      <div className='w-full flex items-center justify-center'>
-        <div className='bg-white w-max h-max py-12 px-6 rounded-xl flex gap-6 flex-col'>
-          <div className='flex flex-row items-center justify-center gap-2'>
+      {/* <Card className='flex items-center justify-center bg-yellow-100'>
+        <div className='w-max h-max p-8 flex gap-6 flex-col items-center justify-center'>
+          <div className='flex flex-row items-center justify-center gap-2 text-yellow-800'>
             <TriangleAlert />
-            <h3 className='font-normal text-xl'>Syarat dan ketentuan</h3>
+            <Typography variant='h3'>Syarat dan Ketentuan</Typography>
           </div>
-          <div className='max-w-72'>
+          <div className=' lg:max-w-72'>
             <ol type='1' className='list-decimal pl-5 space-y-2 text-sm'>
               <li>
                 <p>
                   Mahasiswa bisa mengajukan peminjaman paling cepat 2 minggu
-                  sebelumnya, dan paling lambat 3 hari sebelum digunakan
+                  sebelumnya, dan paling lambat 3 hari sebelum digunakan.
                 </p>
               </li>
               <li>
-                <p>Dosen bisa mengajukan peminjaman kapan saja</p>
+                <p>Dosen bisa mengajukan peminjaman kapan saja.</p>
               </li>
               <li>
                 <p>
                   Pastikan tanggal peminjaman tidak bertabrakan dengan acara
-                  lain
+                  lain.
                 </p>
               </li>
               <li>
                 <p>
                   Persetujuan reservasi oleh Admin yang bertanggung jawab atas
-                  skala prioritas dengan kegiatan waktu yang sama
+                  skala prioritas dengan kegiatan waktu yang sama.
                 </p>
               </li>
               <li>
                 <p>
                   Peminjam mengajukan permohonan peminjaman ruangan kepada Admin
-                  yang bertanggung jawab
+                  yang bertanggung jawab.
                 </p>
               </li>
             </ol>
           </div>
-          <div className='text-center'>
-            <p>
-              Lihat jadwal{' '}
-              <span>
-                <UnstyledLink href='/ruangan/jadwal-ketersediaan'>
-                  disini.
-                </UnstyledLink>
-              </span>
-            </p>
-          </div>
+          <ButtonLink
+            href='/ruangan/jadwal-ketersediaan'
+            className='bg-yellow-800 text-white hover:bg-yellow-700 hover:text-white'
+            variant='light'
+            rightIcon={ChevronRight}
+          >
+            Cek Jadwal Ruangan
+          </ButtonLink>
         </div>
-      </div>
-    </div>
+      </Card> */}
+    </main>
   );
 }
