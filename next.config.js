@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'picsum.photos',
       },
+      {
+        protocol: process.env.NODE_ENV === 'production' ? 'https' : 'http',
+        hostname: new URL(process.env.NEXT_PUBLIC_API_URL).hostname,
+      },
     ],
   },
 

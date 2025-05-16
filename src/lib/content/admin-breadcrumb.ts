@@ -9,5 +9,7 @@ export const adminBreadcrumb: Record<string, string> = {
   '/admin/peminjaman/form': 'Buat Peminjaman',
   '/admin/ruangan/jadwal-ketersediaan': 'Jadwal Ketersediaan',
   '/admin/ruangan': 'Daftar Ruangan',
-  '/admin/ruangan/tambah': 'Tambah Ruangan',
+  '/admin/ruangan/[id]': 'Detail',
+  '/admin/ruangan/edit/[id]': 'Edit',
+  '/admin/ruangan/tambah': 'Tambah',
 };
