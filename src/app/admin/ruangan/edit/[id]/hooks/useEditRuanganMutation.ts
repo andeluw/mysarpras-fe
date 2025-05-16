@@ -6,12 +6,9 @@ import toast from 'react-hot-toast';
 import api from '@/lib/api';
 
 import { EditRuanganRequest } from '@/app/admin/ruangan/edit/[id]/containers/EditRuanganForm';
-import { TambahRuanganRequest } from '@/app/admin/ruangan/tambah/containers/TambahRuanganForm';
 
 import { ApiError, ApiResponse } from '@/types/api';
 import { Ruangan } from '@/types/ruangan';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function useEditRuanganMutation({
   idRuangan,
@@ -23,11 +20,11 @@ export default function useEditRuanganMutation({
   const { mutate: editRuanganMutation, isPending } = useMutation<
     ApiResponse<Ruangan>,
     AxiosError<ApiError>,
-    TambahRuanganRequest
+    EditRuanganRequest
   >({
     mutationFn: async (data: EditRuanganRequest) => {
       const fasilitasString = Array.isArray(data.fasilitas)
-        ? (data.fasilitas as any[]).map((item) => item.value || item).join(', ')
+        ? data.fasilitas.map((item) => item).join(', ')
         : String(data.fasilitas || '');
       const formData = new FormData();
       formData.append('namaRuangan', data.namaRuangan);
@@ -45,7 +42,7 @@ export default function useEditRuanganMutation({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ruangan', 'list'] });
-      toast.success('Ruangan berhasil ditambahkan');
+      toast.success('Ruangan berhasil diperbarui');
       router.push('/admin/ruangan');
     },
     onError: (error) => {

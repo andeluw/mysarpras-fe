@@ -11,7 +11,6 @@ export type Peminjaman = {
   jenisKegiatan: string | null;
   status: 'approved' | 'waiting' | 'rejected' | 'canceled';
   deskripsi: string | null;
-  message: string | null;
   Ruangan: Ruangan;
   User: User;
 };

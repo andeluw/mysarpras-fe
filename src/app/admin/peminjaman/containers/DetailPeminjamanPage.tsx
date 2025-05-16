@@ -1,6 +1,8 @@
 'use client';
 import { Ban, Check, X } from 'lucide-react';
+import { FormProvider, useForm } from 'react-hook-form';
 
+import { imageUrl } from '@/lib/api';
 import { formatDateUTC, formatTimeRangeUTC } from '@/lib/date';
 
 import {
@@ -10,16 +12,36 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/Card';
+import DropzoneInput from '@/components/forms/DropzoneInput';
 import withAuth from '@/components/hoc/withAuth';
 import Typography from '@/components/Typography';
 
 import StatusChip from '@/app/admin/peminjaman/components/StatusChip';
 import UpdateStatusModal from '@/app/admin/peminjaman/components/UpdateStatusModal';
 
+import { FileWithPreview } from '@/types/dropzone';
 import { Peminjaman } from '@/types/peminjaman';
 
 export default withAuth(DetailPeminjamanPage, 'admin');
 function DetailPeminjamanPage({ data }: { data: Peminjaman | undefined }) {
+  const methods = useForm<{ kartuTandaPengenal: FileWithPreview[] }>({
+    mode: 'onTouched',
+    defaultValues: {
+      kartuTandaPengenal: data?.User.kartuTandaPengenal
+        ? [
+            {
+              preview: imageUrl(data?.User.kartuTandaPengenal),
+              name: data?.User.kartuTandaPengenal,
+              size: 0,
+              lastModified: Date.now(),
+              webkitRelativePath: '',
+              type: 'image/jpeg',
+            } as FileWithPreview,
+          ]
+        : [],
+    },
+  });
+
   const userData = [
     {
       title: 'Nama',
@@ -88,6 +110,12 @@ function DetailPeminjamanPage({ data }: { data: Peminjaman | undefined }) {
               </Typography>
             </div>
           ))}
+          <FormProvider {...methods}>
+            <form className='flex flex-col gap-1'>
+              <Typography variant='s3'>Kartu Tanda Pengenal</Typography>
+              <DropzoneInput id='kartuTandaPengenal' readOnly label={null} />
+            </form>
+          </FormProvider>
         </CardContent>
       </Card>
 

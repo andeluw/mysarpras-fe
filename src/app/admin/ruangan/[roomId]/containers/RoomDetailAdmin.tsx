@@ -10,6 +10,7 @@ import { imageUrl } from '@/lib/api';
 import { Card, CardContent } from '@/components/Card';
 import withAuth from '@/components/hoc/withAuth';
 import AdminLayout from '@/components/layouts/admin/AdminLayout';
+import ButtonLink from '@/components/links/ButtonLink';
 import Typography from '@/components/Typography';
 
 import NotFound from '@/app/not-found';
@@ -64,13 +65,13 @@ function DetailRuanganPage() {
           )}
         </div>
         <CardContent className='p-10 flex flex-col gap-5'>
-          {/* <ButtonLink
+          <ButtonLink
             href={`/admin/ruangan/edit/${selectedRuangan.idRuangan}`}
             className='mb-3 w-fit'
             size='md'
           >
             Edit Ruangan
-          </ButtonLink> */}
+          </ButtonLink>
           <Typography variant='j2'>{selectedRuangan.namaRuangan}</Typography>
           <div className='flex items-center gap-2 text-primary'>
             <Typography variant='h3'>Kapasitas:</Typography>

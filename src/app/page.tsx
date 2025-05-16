@@ -1,9 +1,15 @@
 import { ArrowRight, Hotel } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 
 import { Navbar } from '@/components/layouts/user/Navbar';
 import ButtonLink from '@/components/links/ButtonLink';
 import Typography from '@/components/Typography';
+
+export const metadata: Metadata = {
+  title: 'Home | mySarpras',
+  description: 'Sistem Manajemen Sarana dan Prasarana',
+};
 
 export default function HomePage() {
   return (

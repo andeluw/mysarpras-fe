@@ -23,7 +23,7 @@ import { FileWithPreview } from '@/types/dropzone';
 export type EditRuanganRequest = {
   namaRuangan: string;
   kapasitas: number;
-  fasilitas: string | { label: string; value: string }[];
+  fasilitas: string | string[];
   Gedung: string;
   deskripsi: string;
   gambar: FileWithPreview[];
@@ -51,22 +51,29 @@ function EditRuanganForm() {
     mode: 'onTouched',
   });
 
+  const { handleSubmit, setValue } = methods;
+
   React.useEffect(() => {
-    if (selectedRuangan) {
-      methods.reset({
-        namaRuangan: selectedRuangan.namaRuangan || '',
-        kapasitas: selectedRuangan.kapasitas || 0,
-        fasilitas:
-          selectedRuangan.fasilitas?.split(',').map((item) => {
-            const trimmed = item.trim();
-            return { label: trimmed, value: trimmed };
-          }) || [],
-        Gedung: selectedRuangan.Gedung || '',
-        deskripsi: selectedRuangan.deskripsi || '',
-        gambar: selectedRuangan.gambar
+    const loadData = async () => {
+      if (!selectedRuangan) return;
+
+      setValue('namaRuangan', selectedRuangan.namaRuangan);
+      setValue('kapasitas', selectedRuangan.kapasitas);
+      setValue(
+        'fasilitas',
+        selectedRuangan.fasilitas
+          ? selectedRuangan.fasilitas.split(',').map((item) => item.trim())
+          : []
+      );
+      setValue('Gedung', selectedRuangan.Gedung ?? '');
+      setValue('deskripsi', selectedRuangan.deskripsi ?? '');
+
+      setValue(
+        'gambar',
+        selectedRuangan.gambar
           ? [
               {
-                preview: imageUrl(selectedRuangan.gambar),
+                preview: imageUrl(selectedRuangan.gambar, false),
                 name: selectedRuangan.gambar,
                 size: 0,
                 lastModified: Date.now(),
@@ -74,25 +81,19 @@ function EditRuanganForm() {
                 type: 'image/jpeg',
               } as FileWithPreview,
             ]
-          : [],
-      });
-    }
-  }, [selectedRuangan, methods]);
+          : []
+      );
+    };
 
-  const { handleSubmit } = methods;
+    loadData();
+  }, [selectedRuangan, setValue]);
+
   const { editRuanganMutation, isPending } = useEditRuanganMutation({
     idRuangan: Number(id),
   });
 
   function onSubmit(data: EditRuanganRequest) {
-    editRuanganMutation({
-      ...data,
-      fasilitas: Array.isArray(data.fasilitas)
-        ? data.fasilitas
-            .map((item) => (typeof item === 'string' ? item : item.value))
-            .join(', ')
-        : data.fasilitas,
-    });
+    editRuanganMutation(data);
   }
 
   return (

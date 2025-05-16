@@ -105,7 +105,7 @@ function RiwayatUserPage() {
     );
 
   const url = buildPaginatedTableURL({
-    baseUrl: '/peminjaman',
+    baseUrl: '/peminjaman/getPeminjamanByUserId',
     tableState,
     additionalParam: {
       status:
