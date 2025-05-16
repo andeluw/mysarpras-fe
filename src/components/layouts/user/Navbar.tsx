@@ -189,7 +189,7 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
                   <CircleUserRound className='h-6 w-6' />
                   <div className='flex flex-col items-start'>
                     <Typography variant='s3' className='font-medium'>
-                      {user.namaUser}
+                      {user?.namaUser}
                     </Typography>
                   </div>
                   <ChevronDown className='h-4 w-4 text-muted-foreground ml-1' />
@@ -198,10 +198,10 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
               <DropdownMenuContent align='end' className='w-56'>
                 <div className='px-2 py-1.5'>
                   <Typography variant='small' className='text-muted-foreground'>
-                    {user.role[0].toUpperCase() + user.role.slice(1)}
+                    {user?.role?.[0]?.toUpperCase() + user?.role?.slice(1)}
                   </Typography>
                   <Typography variant='s3' className='font-medium truncate'>
-                    {user.email}
+                    {user?.email}
                   </Typography>
                 </div>
                 <DropdownMenuSeparator />
@@ -285,10 +285,10 @@ export function Navbar({ navigation = mainNav }: NavbarProps) {
                   <CircleUserRound className='h-6 w-6' />
                   <div className='flex flex-col'>
                     <Typography variant='s2' className='font-medium'>
-                      {user.namaUser}
+                      {user?.namaUser}
                     </Typography>
                     <Typography variant='s3' className='text-muted-foreground'>
-                      {user.role[0].toUpperCase() + user.role.slice(1)}
+                      {user?.role?.[0]?.toUpperCase() + user?.role?.slice(1)}
                     </Typography>
                   </div>
                 </div>

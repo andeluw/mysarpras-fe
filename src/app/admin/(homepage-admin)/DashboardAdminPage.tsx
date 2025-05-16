@@ -81,7 +81,7 @@ const availablePages = [
       },
       {
         title: 'Ubah Password',
-        url: '/admin/ubah-password',
+        url: '/admin/profil/ubah-password',
         caption: 'Perbarui kata sandi untuk keamanan akun Anda',
         icon: LockKeyhole,
       },
