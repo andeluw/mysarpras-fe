@@ -1,6 +1,6 @@
 'use client';
 
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -11,10 +11,8 @@ import HelperText from '@/components/forms/HelperText';
 import Select from '@/components/forms/Select';
 import Textarea from '@/components/forms/Textarea';
 import withAuth from '@/components/hoc/withAuth';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import PrimaryLink from '@/components/links/PrimaryLink';
-import Typography from '@/components/Typography';
-
-import useAuthStore from '@/stores/useAuthStore';
 
 import RoomSelector from '@/app/peminjaman/form/component/RoomSelector';
 import TimeSelector from '@/app/peminjaman/form/component/TimeSelector';
@@ -31,9 +29,8 @@ export type RoomRequestFormData = {
   deskripsi: string;
 };
 
-export default withAuth(RoomRequestForm, 'user');
-function RoomRequestForm() {
-  const user = useAuthStore.useUser();
+export default withAuth(FormPeminjamanPage, 'admin');
+function FormPeminjamanPage() {
   const methods = useForm<RoomRequestFormData>({
     mode: 'onTouched',
   });
@@ -55,15 +52,11 @@ function RoomRequestForm() {
   }
 
   return (
-    <section className='flex flex-col gap-8'>
-      <div className='flex flex-col gap-2'>
-        <Typography variant='j2' className='text-primary-800'>
-          Buat Peminjaman
-        </Typography>
-        <Typography variant='s2' className='text-muted-foreground'>
-          Silahkan isi form berikut untuk membuat peminjaman ruangan.
-        </Typography>
-      </div>
+    <AdminLayout
+      title='Buat Peminjaman'
+      subheading='Silahkan isi form berikut untuk membuat peminjaman'
+      breadcrumbs={['/admin', '/admin/peminjaman/form']}
+    >
       <Card>
         <FormProvider {...methods}>
           <form
@@ -82,13 +75,8 @@ function RoomRequestForm() {
               validation={{
                 required: 'Tanggal peminjaman tidak boleh kosong',
               }}
-              fromDate={
-                user?.role == 'mahasiswa' ? addDays(new Date(), 3) : new Date()
-              }
-              toDate={
-                user?.role == 'mahasiswa' ? addDays(new Date(), 14) : undefined
-              }
-              helperText='Mahasiswa dapat mengajukan peminjaman maksimal 3 hari sebelum tanggal penggunaan, dan paling lambat 14 hari ke depan.'
+              fromDate={new Date()}
+              toDate={undefined}
             />
 
             <div>
@@ -137,6 +125,6 @@ function RoomRequestForm() {
           </form>
         </FormProvider>
       </Card>
-    </section>
+    </AdminLayout>
   );
 }

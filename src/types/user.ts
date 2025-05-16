@@ -6,3 +6,7 @@ export type User = {
   role: 'admin' | 'mahasiswa' | 'dosen';
   kartuTandaPengenal: string | null;
 };
+
+export type WithToken = {
+  token: string;
+};

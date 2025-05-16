@@ -88,7 +88,7 @@ export default function TimeSelector({
         <Select
           id='jamAwal'
           label='Jam Awal'
-          placeholder='Pilih Jam Awal'
+          placeholder='Pilih Jam'
           options={jamAwalOptions}
           disabled={!selectedIdRuangan || isLoadingPeminjaman || !selectedDate}
           validation={{
@@ -103,7 +103,7 @@ export default function TimeSelector({
         <Select
           id='jamAkhir'
           label='Jam Akhir'
-          placeholder='Pilih Jam Akhir'
+          placeholder='Pilih Jam'
           options={jamAkhirOptions}
           disabled={!selectedJamAwal}
           validation={{

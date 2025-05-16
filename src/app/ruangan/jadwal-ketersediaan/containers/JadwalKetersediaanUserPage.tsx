@@ -18,6 +18,7 @@ import {
 } from '@/components/Card';
 import { DatePicker } from '@/components/DatePicker';
 import Select from '@/components/forms/Select';
+import withAuth from '@/components/hoc/withAuth';
 import UserLayout from '@/components/layouts/user/UserLayout';
 import PrimaryLink from '@/components/links/PrimaryLink';
 import { ScrollArea, ScrollBar } from '@/components/ScrollArea';
@@ -58,7 +59,8 @@ export function getBlockedHours(jamAwal: Date, jamAkhir: Date): number[] {
   return hours;
 }
 
-export default function JadwalKetersediaanPage() {
+export default withAuth(JadwalKetersediaanPage, 'user');
+function JadwalKetersediaanPage() {
   const methods = useForm<FilterValues>({
     defaultValues: {
       tanggal: new Date(),

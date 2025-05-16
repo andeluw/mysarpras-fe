@@ -14,6 +14,7 @@ import { buildPaginatedTableURL } from '@/lib/table';
 import useServerTable from '@/hooks/useServerTable';
 
 import { DatePicker } from '@/components/DatePicker';
+import withAuth from '@/components/hoc/withAuth';
 import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import IconLink from '@/components/links/IconLink';
 import { PopupFilter, PopupFilterProps } from '@/components/table/PopupFilter';
@@ -31,7 +32,8 @@ type UserFilter = {
   jenisKegiatan: string[];
 };
 
-export default function RiwayatPage() {
+export default withAuth(RiwayatPage, 'admin');
+function RiwayatPage() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const { tableState, setTableState } = useServerTable<Peminjaman>();
   const columns: ColumnDef<Peminjaman>[] = [

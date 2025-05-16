@@ -33,7 +33,7 @@ export const adminNav = {
         },
         {
           title: 'Buat Peminjaman',
-          url: '/admin/peminjaman/buat',
+          url: '/admin/peminjaman/form',
         },
       ],
     },
