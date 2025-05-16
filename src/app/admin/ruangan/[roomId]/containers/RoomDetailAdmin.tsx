@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React from 'react';
@@ -9,8 +9,7 @@ import { imageUrl } from '@/lib/api';
 
 import { Card, CardContent } from '@/components/Card';
 import withAuth from '@/components/hoc/withAuth';
-import UserLayout from '@/components/layouts/user/UserLayout';
-import ButtonLink from '@/components/links/ButtonLink';
+import AdminLayout from '@/components/layouts/admin/AdminLayout';
 import Typography from '@/components/Typography';
 
 import NotFound from '@/app/not-found';
@@ -19,7 +18,7 @@ import { useGetAllRuangan } from '@/app/ruangan/hooks/useGetRuanganOptions';
 
 import { Ruangan } from '@/types/ruangan';
 
-export default withAuth(DetailRuanganPage, 'user');
+export default withAuth(DetailRuanganPage, 'admin');
 function DetailRuanganPage() {
   const params = useParams();
   const roomId = params.roomId as string;
@@ -37,16 +36,12 @@ function DetailRuanganPage() {
   const facilities = selectedRuangan.fasilitas?.split(',') || [];
 
   return (
-    <UserLayout>
-      <ButtonLink
-        href='/ruangan'
-        variant='light'
-        className='mb-8'
-        leftIcon={ArrowLeft}
-      >
-        Kembali ke Daftar Ruangan
-      </ButtonLink>
-
+    <AdminLayout
+      breadcrumbs={['/admin', '/admin/ruangan', `/admin/ruangan/[id]`]}
+      title='Detail Ruangan'
+      subheading='Detail ruangan'
+      backHref='/admin/ruangan'
+    >
       <Card className='flex flex-col justify-between h-full overflow-hidden'>
         <div className='relative  h-full w-full aspect-video'>
           {selectedRuangan.gambar ? (
@@ -69,6 +64,13 @@ function DetailRuanganPage() {
           )}
         </div>
         <CardContent className='p-10 flex flex-col gap-5'>
+          {/* <ButtonLink
+            href={`/admin/ruangan/edit/${selectedRuangan.idRuangan}`}
+            className='mb-3 w-fit'
+            size='md'
+          >
+            Edit Ruangan
+          </ButtonLink> */}
           <Typography variant='j2'>{selectedRuangan.namaRuangan}</Typography>
           <div className='flex items-center gap-2 text-primary'>
             <Typography variant='h3'>Kapasitas:</Typography>
@@ -103,6 +105,6 @@ function DetailRuanganPage() {
           </div>
         </CardContent>
       </Card>
-    </UserLayout>
+    </AdminLayout>
   );
 }

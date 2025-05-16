@@ -1,41 +1,61 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { User } from 'lucide-react';
+import Image from 'next/image';
 import React from 'react';
 
-import Button from '@/components/buttons/Button';
-import NextImage from '@/components/NextImage';
+import { imageUrl } from '@/lib/api';
+
+import { Card } from '@/components/Card';
+import ButtonLink from '@/components/links/ButtonLink';
+import Typography from '@/components/Typography';
+
+import { Ruangan } from '@/types/ruangan';
 
 interface RuanganCardProps {
-  ruangan: string;
-  image_url: string;
-  id: string;
+  ruangan: Ruangan;
+  isAdmin?: boolean;
 }
 
-const RuanganCard = ({ ruangan, image_url, id }: RuanganCardProps) => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/ruangan/${id}`);
-  };
-
+const RuanganCard = ({ ruangan, isAdmin = false }: RuanganCardProps) => {
   return (
-    <div className='flex flex-col justify-between h-full rounded-[12px] bg-white overflow-hidden'>
+    <Card className='flex flex-col justify-between h-full overflow-hidden'>
       <div className='relative w-full aspect-video'>
-        <NextImage
-          src={image_url}
-          alt={ruangan}
-          layout='fill'
-          className='object-cover'
-        />
+        {ruangan.gambar ? (
+          <Image
+            src={ruangan.gambar ? imageUrl(ruangan.gambar, false) : ''}
+            alt={ruangan.namaRuangan}
+            layout='fill'
+            className='object-cover'
+          />
+        ) : (
+          <div className='w-full h-full bg-gray-200 flex items-center justify-center'>
+            <Typography variant='b3' className='text-muted-foreground'>
+              Gambar tidak tersedia
+            </Typography>
+          </div>
+        )}
       </div>
-      <div className='p-5 flex flex-col gap-4'>
-        <h2 className='text-[20px] font-semibold'>{ruangan}</h2>
-        <Button className='w-full' onClick={handleClick}>
-          Details
-        </Button>
+      <div className='p-5 flex flex-col gap-5'>
+        <div className='flex gap-1.5 justify-center flex-col'>
+          <Typography variant='h3'>{ruangan.namaRuangan}</Typography>
+          <Typography variant='b3' className='text-muted-foreground'>
+            {ruangan.kapasitas}
+            <User size={16} className='inline-block ml-1' />
+          </Typography>
+        </div>
+        <ButtonLink
+          className='w-full'
+          href={
+            isAdmin
+              ? `/admin/ruangan/${ruangan.idRuangan}`
+              : `/ruangan/${ruangan.idRuangan}`
+          }
+        >
+          Lihat Detail
+        </ButtonLink>
       </div>
-    </div>
+    </Card>
   );
 };
 

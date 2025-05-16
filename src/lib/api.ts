@@ -76,3 +76,14 @@ export const setApiContext = (_context: GetServerSidePropsContext) => {
 };
 
 export default api;
+
+export const imageUrl = (path: string, isUserImg = true) => {
+  if (path.startsWith('http')) {
+    return path;
+  }
+  const baseUrl = (process.env.NEXT_PUBLIC_API_URL || '').replace(
+    /\/api\/?$/,
+    ''
+  );
+  return `${baseUrl}/uploads/${isUserImg ? 'user' : 'ruangan'}/${path}`;
+};
