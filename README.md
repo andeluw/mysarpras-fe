@@ -8,7 +8,7 @@
 - 🧑‍🎓 **Autentikasi Pengguna**: Sistem login untuk mahasiswa, dosen, dan admin.
 - 📂 **Manajemen Jadwal**: Lihat jadwal peminjaman ruangan dan kelola status peminjaman.
 - 🏢 **Daftar Ruang Lengkap**: Informasi detail ruangan beserta fasilitas yang tersedia.
-- 🔔 **Notifikasi Real-time**: Dapatkan pemberitahuan status peminjaman via email atau aplikasi.
+- 🔔 **Notifikasi Real-time**: Dapatkan pemberitahuan status peminjaman via email.
 - 📊 **Dashboard Admin**: Pantau dan kelola seluruh peminjaman melalui dashboard admin.
 
 ## 🚀 Tech Stack
@@ -20,7 +20,6 @@
 - [**React Hook Form**](https://react-hook-form.com) — Validasi form yang efisien dan fleksibel untuk aplikasi React.
 - [**TypeScript**](https://www.typescriptlang.org) — Superset JavaScript dengan penambahan static type checking.
 - [**shadcn/ui**](https://ui.shadcn.com/) — Komponen UI yang indah dan aksesibel, dibangun dengan Tailwind CSS dan Radix UI.
-- [**Zod**](https://zod.dev) — Library untuk deklarasi dan validasi skema data dengan pendekatan TypeScript-first.
 
 ## 📥 Instalasi
 
