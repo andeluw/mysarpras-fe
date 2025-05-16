@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Input from '@/components/forms/Input';
 import Select from '@/components/forms/Select';
+import Textarea from '@/components/forms/Textarea';
 
 interface KegiatanSelectorProps {
   options: Array<{ value: string; label: string }>;
@@ -9,9 +9,9 @@ interface KegiatanSelectorProps {
 
 const KegiatanSelector = ({ options }: KegiatanSelectorProps) => {
   return (
-    <div>
+    <div className='flex flex-col gap-8 w-full'>
       <Select id='jenisSelect' label='Pilih jenis kegiatan' options={options} />
-      <Input id='deskripsiInput' label='Deskripsi Kegiatan' />
+      <Textarea id='deskripsiInput' label='Deskripsi Kegiatan' />
     </div>
   );
 };
