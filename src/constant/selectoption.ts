@@ -1,6 +1,11 @@
 export const timeSlotsOptions = Array.from({ length: 15 }, (_, i) => ({
-  value: `${i + 7}`,
+  value: `${i + 7}:00`,
   label: `${i + 7}:00`,
+}));
+
+export const timeSlotsOptions2 = Array.from({ length: 15 }, (_, i) => ({
+  value: `${i + 8}:00`,
+  label: `${i + 8}:00`,
 }));
 
 export const ruanganOptions = [

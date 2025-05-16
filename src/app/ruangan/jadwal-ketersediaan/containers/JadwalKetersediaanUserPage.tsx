@@ -23,6 +23,8 @@ import PrimaryLink from '@/components/links/PrimaryLink';
 import { ScrollArea, ScrollBar } from '@/components/ScrollArea';
 import Typography from '@/components/Typography';
 
+import useGetRuanganOptions from '@/app/ruangan/hooks/useGetRuanganOptions';
+
 import { ApiResponse } from '@/types/api';
 import { Peminjaman } from '@/types/peminjaman';
 import { Ruangan } from '@/types/ruangan';
@@ -37,7 +39,7 @@ type FilterValues = {
   tanggal: Date;
 };
 
-function getHourlySlots(startHour = 7, endHour = 22) {
+export function getHourlySlots(startHour = 7, endHour = 22) {
   const hours = [];
   for (let i = startHour; i < endHour; i++) {
     hours.push(i);
@@ -46,7 +48,7 @@ function getHourlySlots(startHour = 7, endHour = 22) {
 }
 
 // From jamAwal and jamAkhir, get the blocked hour range (e.g. 11 to 13 returns [11, 12])
-function getBlockedHours(jamAwal: Date, jamAkhir: Date): number[] {
+export function getBlockedHours(jamAwal: Date, jamAkhir: Date): number[] {
   const start = new Date(jamAwal).getUTCHours();
   const end = new Date(jamAkhir).getUTCHours();
   const hours = [];
@@ -73,25 +75,7 @@ export default function JadwalKetersediaanPage() {
     name: 'idRuangan',
   });
 
-  const { data: listRuanganData, isLoading: isLoadingRuangan } = useQuery<
-    ApiResponse<Ruangan[]>
-  >({
-    queryKey: ['ruangan', 'list'],
-    queryFn: async () => {
-      const res = await api.get('/ruangan');
-      return res.data;
-    },
-  });
-
-  const listRuangan = React.useMemo(() => {
-    if (listRuanganData) {
-      return listRuanganData.data.map((ruangan) => ({
-        label: ruangan.namaRuangan,
-        value: String(ruangan.idRuangan),
-      }));
-    }
-    return [];
-  }, [listRuanganData]);
+  const { listRuanganOptions, isLoadingRuangan } = useGetRuanganOptions();
 
   const { data: ruangan } = useQuery<ApiResponse<JadwalResponse>>({
     queryKey: ['ruangan', 'jadwal-ketersediaan', tanggal, selectedIdRuangan],
@@ -107,7 +91,6 @@ export default function JadwalKetersediaanPage() {
 
   return (
     <UserLayout>
-      {/* <div className='px-8 py-12 md:px-20 md:py-16'> */}
       <div className='flex flex-col gap-2'>
         <Typography variant='j2' className='text-primary-800'>
           Ketersediaan Ruangan
@@ -136,7 +119,7 @@ export default function JadwalKetersediaanPage() {
                 <Select
                   id='idRuangan'
                   label={null}
-                  options={listRuangan}
+                  options={listRuanganOptions}
                   placeholder='Pilih Ruangan'
                   isLoading={isLoadingRuangan}
                   containerClassName='w-full lg:w-1/3'
@@ -213,7 +196,6 @@ export default function JadwalKetersediaanPage() {
           </ScrollArea>
         </CardContent>
       </Card>
-      {/* </div> */}
     </UserLayout>
   );
 }

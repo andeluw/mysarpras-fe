@@ -1,130 +1,145 @@
 'use client';
 
-import { format } from 'date-fns';
-import React, { useCallback, useEffect, useState } from 'react';
+import { addDays, format } from 'date-fns';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
+import { Card } from '@/components/Card';
+import { DatePicker } from '@/components/DatePicker';
+import HelperText from '@/components/forms/HelperText';
+import Select from '@/components/forms/Select';
+import Textarea from '@/components/forms/Textarea';
+import PrimaryLink from '@/components/links/PrimaryLink';
+import Typography from '@/components/Typography';
 
-import DateSelector from '@/app/peminjaman/form/component/DateSelector';
-import KegiatanSelector from '@/app/peminjaman/form/component/KegiatanSelector';
 import RoomSelector from '@/app/peminjaman/form/component/RoomSelector';
 import TimeSelector from '@/app/peminjaman/form/component/TimeSelector';
-import {
-  jenisKegiatanOptions,
-  ruanganOptions,
-  timeSlotsOptions,
-} from '@/constant/selectoption';
+import usePinjamMutation from '@/app/peminjaman/form/hooks/usePinjamMutation';
+import useGetRuanganOptions from '@/app/ruangan/hooks/useGetRuanganOptions';
+import { jenisKegiatanOptions } from '@/constant/selectoption';
 
-import { Peminjaman } from '@/types/peminjaman';
-import { getRuanganById } from '@/types/test/mock';
+export type RoomRequestFormData = {
+  ruanganId: number | string;
+  tanggal: Date | string;
+  jamAwal: string;
+  jamAkhir: string;
+  jenisKegiatan: string;
+  deskripsi: string;
+};
 
-type RoomRequestFormData = {
-  dateField: Date;
-  jamAwalSelect: string;
-  ruanganSelect: string;
-  jenisKegiatanSelect: string;
-  deskripsi?: string;
+const user = {
+  namaUser: 'Budi Santoso',
+  email: 'dosen@example.com',
+  noTelp: null,
+  role: 'dosen',
+  kartuTandaPengenal: `${process.env.NEXT_PUBLIC_API_URL}/uploads/user/ff41271d-1d79-4b02-a230-6ae5f3183b4c.png`,
 };
 
 export default function RoomRequestForm() {
   const methods = useForm<RoomRequestFormData>({
-    mode: 'onChange',
+    mode: 'onTouched',
   });
-  const { setValue, watch } = methods;
-  const selectedDate = watch('dateField');
-  const selectedTime = watch('jamAwalSelect');
-  const [bookings, setBookings] = useState<Peminjaman[]>([]);
+  const { watch, handleSubmit } = methods;
+  const selectedIdRuangan = watch('ruanganId');
+  const selectedDate = watch('tanggal');
+  const selectedJamAwal = watch('jamAwal');
 
-  const normalizeTime = (timeString: string) => {
-    const date = new Date(timeString);
-    return date.getUTCHours();
-  };
+  const { listRuanganOptions, isLoadingRuangan } = useGetRuanganOptions();
 
-  const fetchBookings = useCallback(async () => {
-    if (!selectedDate) return;
+  const { pinjamMutation, isPending } = usePinjamMutation();
 
-    try {
-      const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const promises = ruanganOptions.map(async (room) => {
-        const ruangan = await getRuanganById(room.value);
-        return (
-          ruangan?.Peminjaman.filter(
-            (booking) =>
-              format(new Date(booking.tanggal), 'yyyy-MM-dd') === formattedDate
-          ) || []
-        );
-      });
-      const responses = await Promise.all(promises);
-      const allBookings = responses.flat();
-      setBookings(allBookings);
-    } catch (error) {
-      toast.error(String(error));
-    }
-  }, [selectedDate]);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
-
-  const getAvailableTimeSlots = () => {
-    const bookedSlots = bookings.map((booking) => ({
-      roomId: booking.Ruangan_idRuangan,
-      start: normalizeTime(booking.jamAwal.toString()),
-      end: normalizeTime(booking.jamAkhir.toString()),
-    }));
-
-    return timeSlotsOptions.filter((slot) => {
-      const hour = parseInt(slot.value);
-      return !bookedSlots.some(
-        (booking) => hour >= booking.start && hour < booking.end
-      );
+  function onSubmit(data: RoomRequestFormData) {
+    pinjamMutation({
+      ...data,
+      ruanganId: Number(data.ruanganId),
+      tanggal: format(data.tanggal, 'yyyy-MM-dd'),
     });
-  };
-
-  const getAvailableRooms = () => {
-    if (!selectedTime) return ruanganOptions;
-
-    const hour = parseInt(selectedTime);
-    const bookedRoomIds = bookings
-      .filter((booking) => {
-        const start = normalizeTime(booking.jamAwal.toString());
-        const end = normalizeTime(booking.jamAkhir.toString());
-        return hour >= start && hour < end;
-      })
-      .map((booking) => booking.Ruangan_idRuangan.toString());
-
-    return ruanganOptions.filter((room) => !bookedRoomIds.includes(room.value));
-  };
-
-  const availableTimeSlots = selectedDate
-    ? getAvailableTimeSlots()
-    : timeSlotsOptions;
-  const availableRooms = selectedDate ? getAvailableRooms() : ruanganOptions;
-
-  const handleDateChange = (date: Date) => {
-    setValue('dateField', date);
-  };
+  }
 
   return (
-    <FormProvider {...methods}>
-      <form className='flex gap-y-8 flex-col p-8'>
-        <h1 className='text-2xl'>Reservasi Ruangan</h1>
+    <section className='flex flex-col gap-8'>
+      <div className='flex flex-col gap-2'>
+        <Typography variant='j2' className='text-primary-800'>
+          Buat Peminjaman
+        </Typography>
+        <Typography variant='s2' className='text-muted-foreground'>
+          Silahkan isi form berikut untuk membuat peminjaman ruangan.
+        </Typography>
+      </div>
+      <Card>
+        <FormProvider {...methods}>
+          <form
+            className='flex gap-y-8 flex-col p-8 gap-6'
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <RoomSelector
+              options={listRuanganOptions}
+              isLoading={isLoadingRuangan}
+            />
 
-        <DateSelector
-          selectedDate={selectedDate}
-          onDateChange={handleDateChange}
-        />
+            <DatePicker
+              name='tanggal'
+              label='Tanggal Peminjaman'
+              placeholder='Pilih Tanggal'
+              validation={{
+                required: 'Tanggal peminjaman tidak boleh kosong',
+              }}
+              fromDate={
+                user.role == 'mahasiswa' ? addDays(new Date(), 3) : new Date()
+              }
+              toDate={
+                user.role == 'mahasiswa' ? addDays(new Date(), 14) : undefined
+              }
+              helperText='Mahasiswa dapat mengajukan peminjaman maksimal 3 hari sebelum tanggal penggunaan, dan paling lambat 14 hari ke depan.'
+            />
 
-        <TimeSelector options={availableTimeSlots} disabled={!selectedDate} />
+            <div>
+              <TimeSelector
+                selectedIdRuangan={selectedIdRuangan as number}
+                selectedDate={selectedDate as Date}
+                selectedJamAwal={selectedJamAwal}
+              />
+              <HelperText helperTextClassName='mt-2'>
+                Jadwal ketersediaan ruangan dapat dilihat lebih lengkap{' '}
+                <PrimaryLink href='/ruangan/jadwal-ketersediaan'>
+                  di sini
+                </PrimaryLink>
+                .
+              </HelperText>
+            </div>
 
-        <RoomSelector options={availableRooms} selectedDate={selectedDate} />
+            <Select
+              id='jenisKegiatan'
+              label='Jenis Kegiatan'
+              options={jenisKegiatanOptions}
+              validation={{
+                required: {
+                  value: true,
+                  message: 'Jenis kegiatan tidak boleh kosong',
+                },
+              }}
+              placeholder='Pilih Jenis Kegiatan'
+            />
 
-        <KegiatanSelector options={jenisKegiatanOptions} />
+            <Textarea
+              id='deskripsi'
+              label='Alasan Peminjaman'
+              validation={{
+                required: {
+                  value: true,
+                  message: 'Alasan peminjaman tidak boleh kosong',
+                },
+              }}
+              rows={4}
+            />
 
-        <Button type='submit'>Submit</Button>
-      </form>
-    </FormProvider>
+            <Button type='submit' isLoading={isPending}>
+              Submit
+            </Button>
+          </form>
+        </FormProvider>
+      </Card>
+    </section>
   );
 }
