@@ -12,10 +12,11 @@ export const adminNav = {
         {
           title: 'Profil Saya',
           url: '/admin/profil',
+          exactMatch: true,
         },
         {
           title: 'Ubah Password',
-          url: '/admin/ubah-password',
+          url: '/admin/profil/ubah-password',
         },
       ],
     },
